@@ -3,12 +3,35 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import {
+  Carousel,
+  CarouselItem,
+  Col,
+  Container,
+  Footer,
+  Header,
+  Link,
+  Main,
+  Menu,
+  MenuItem,
+  Row,
+  Tag,
+} from 'element-ui'
 
 Vue.config.productionTip = false
+Vue.use(Container)
+Vue.use(MenuItem)
+Vue.use(Carousel)
+Vue.use(Link)
+Vue.use(CarouselItem)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Tag)
+Vue.use(Menu)
+Vue.use(Main)
+Vue.use(Header)
+Vue.use(Footer)
 
-Vue.use(ElementUI);
 
 new Vue({
   router,
