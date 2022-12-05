@@ -46,9 +46,16 @@
                   { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }]">
           <el-input v-model="forgetForm.email" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="验证码" :rules="[{ required: true, message: '请输入验证码',}]">
+          <el-input v-model="authcode"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password" :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+          <el-input type="password" v-model="user.password" autocomplete="off" show-password></el-input>
+        </el-form-item>
         <el-form-item style="text-align: center;">
           <el-button :loading="loading" @click.native="sendEmailCode" type="success" plain>发送</el-button>
           <el-button :loading="loading" @click.native="hideForgetPasswordDialog" plain>取消</el-button>
+          <el-button :loading="loading" @click.native="changePassword" plain>确定</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -64,6 +71,7 @@ import {mapState} from 'vuex';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
+import 'mint-ui/lib/style.css';
 export default {
   name: "login",
   components: {
@@ -84,7 +92,8 @@ export default {
       forget: false,
       loading: false,
       loginLoading: false,
-      historyUrl: ''
+      historyUrl: '',
+      authcode:''
     }
   },
   computed: {
@@ -109,7 +118,7 @@ export default {
                 Toast({ message: '登录成功', type: 'success',duration: 1500});   // ui弹窗提示
                 if (_ts.historyUrl) {
                   window.location.href = _ts.historyUrl
-                } // 跳转到首页
+                } // 跳转到原来页面
               } else {
               Toast({ message: res.data.message, duration: 1500});   // ui弹窗提示
             }
@@ -143,14 +152,33 @@ export default {
       let data = {
         email: email
       };
-      _ts.$axios.$get('/api/console/get-forget-password-email', {
+      _ts.$axios.$post('/authenticate/get-forget-password-code', {
+        params: data
+      }).then(function (res) {
+        _ts.loading = false;
+        // _ts.forget = false;
+        if (res) {
+          Toast({ message: res.data.message, duration: 1500}); 
+          _ts.$message(res.message)
+        }
+      })
+    },
+    changePassword(){
+      let _ts = this;
+      _ts.loading = true;
+      let email = _ts.forgetForm.email;
+      if (!email&&_ts.authcode) {
+        return false
+      }
+      let data = {
+        password: _ts.user.password,
+        code:_ts.authcode,
+      };
+      _ts.$axios.$post('/authenticate/forget-password', {
         params: data
       }).then(function (res) {
         _ts.loading = false;
         _ts.forget = false;
-        if (res) {
-          _ts.$message(res.message)
-        }
       })
     }
   },

@@ -7,7 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Toast } from 'mint-ui';
 import axios from 'axios';
-
+import 'mint-ui/lib/style.css'; 
 Vue.prototype.$http = axios;
 Vue.use(Toast)
 Vue.config.productionTip = false
@@ -16,21 +16,16 @@ Vue.use(ElementUI);
 
 // 全局路由构造函数，判断是否登录和要跳转到页面
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(m => m.meta.requireAuth)) {    // 需要登录
-    if(window.localStorage.token && window.localStorage.isLogin === '1'){
-      next()
-    } else if (to.path !== '/login') {
-      let token = window.localStorage.token;
-      if (token === 'null' || token === '' || token === undefined){
-          next({path: '/login'})
-          Toast({ message: '检测到您还未登录,请登录后操作！', duration: 1500 })
-      }
-    } else {
-      next()
-    }
-  } else {   // 不需要登录
+  if(window.localStorage.token && window.localStorage.isLogin === '1'){ // 需要登录
     next()
-    console.log("11111")
+  } else if (to.path !== '/login'&&to.path!=='/register') {
+    let token = window.localStorage.token;
+    if (token === 'null' || token === '' || token === undefined){
+        next({path: '/login'})
+        Toast({ message: '检测到您还未登录,请登录后操作！', duration: 1500 })
+    }
+  } else {
+    next()
   }
 })
 

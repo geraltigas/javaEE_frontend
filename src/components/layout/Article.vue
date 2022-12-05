@@ -55,7 +55,7 @@ import "mavon-editor/dist/css/index.css";
     },
     methods: {
       submitForm(formName) {
-        this.$axios.post('https://localhost:7092/api/posts/Create', 
+        this.$axios.post('/notes/post', 
             {
               Title:this.ruleForm.title,
               Content:this.ruleForm.content,
@@ -65,13 +65,16 @@ import "mavon-editor/dist/css/index.css";
               this.$alert('操作成功', '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
-                  this.$router.push("/blogs")
+                  this.$router.push(
+                {
+                  name: 'login'
+                }
+              )
                 }
               });
             }).catch(err => {
               // 报错
               console.log(err)
-                window.location.href = "/blogs"
             })
       },
       resetForm(formName) {

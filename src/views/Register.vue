@@ -57,6 +57,8 @@
 <script>
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { Toast } from 'mint-ui';
+import 'mint-ui/lib/style.css';
 export default {
   name: "register",
   components: {
@@ -80,23 +82,23 @@ export default {
   methods: {
     sendCode() {
       let _ts = this;
-      _ts.timerHandler();
-      let email = _ts.user.email;
+      _ts.loading = true;
+      let email = _ts.forgetForm.email;
       if (!email) {
         return false
       }
       let data = {
         email: email
-      }
-      _ts.$axios.$get('/api/console/get-email-code', {
+      };
+      _ts.$axios.$post('/authenticate/get-forget-password-code', {
         params: data
-      }).then(response => {
-        if (response.message) {
-          _ts.$message(response.message);
+      }).then(function (res) {
+        _ts.loading = false;
+        // _ts.forget = false;
+        if (res) {
+          Toast({ message: res.data.message, duration: 1500}); 
+          _ts.$message(res.message)
         }
-      }).catch(error => {
-        console.log(error);
-        _ts.$message("邮件发送失败,请检查邮箱是否正确!");
       })
     },
     timerHandler() {
@@ -126,7 +128,7 @@ export default {
             password: _ts.user.password,
             code: _ts.user.code
           }
-          _ts.$axios.$post('/api/console/register', data).then(function (res) {
+          _ts.$axios.$post('/authenticate/register', data).then(function (res) {
             _ts.$set(_ts, 'registerLoading', false);
             if (res) {
               _ts.$message("注册成功！");
