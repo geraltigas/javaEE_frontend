@@ -16,6 +16,9 @@ import {
   MenuItem,
   Row,
   Tag,
+  Input,
+    Radio,
+    RadioGroup
 } from 'element-ui'
 
 Vue.config.productionTip = false
@@ -31,6 +34,9 @@ Vue.use(Menu)
 Vue.use(Main)
 Vue.use(Header)
 Vue.use(Footer)
+Vue.use(Input)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 
 
 new Vue({
