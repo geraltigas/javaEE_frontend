@@ -1,12 +1,12 @@
 <template>
   <el-container className="main_main_container">
-    <el-header>
+    <el-header style="width:100%;margin: 0;padding: 0;top: 0;">
       <Header></Header>
     </el-header>
     <el-main className="main_main">
       <Main></Main>
     </el-main>
-    <el-footer>
+    <el-footer class="footer">
       <Footer></Footer>
     </el-footer>
   </el-container>
@@ -14,8 +14,8 @@
 
 <script>
 import Header from "@/components/layout/Header";
-import Main from "@/components/layout/Main";
 import Footer from "@/components/layout/Footer";
+import Main from "@/components/layout/Main";
 export default {
   name: 'HomeView',
   components: {
@@ -31,21 +31,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>

@@ -17,7 +17,7 @@
             <el-link
               style="color: black"
               type="primary"
-              class="artical_true_head"
+              class="artical_true_head" 
             >
               <h1>{{ item.head }}</h1>
             </el-link>

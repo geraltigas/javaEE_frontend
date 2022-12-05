@@ -8,11 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^1.2.0",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.12",
+    "mavon-editor": "^2.10.4",
+    "mint-ui": "^2.2.13",
     "register-service-worker": "^1.7.2",
     "vue": "^2.6.14",
+    "vue-dragscroll": "^4.0.5",
     "vue-router": "^3.5.1",
+    "vue-seamless-scroll": "^1.1.23",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -42,7 +47,10 @@
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "vue/multi-word-component-names": 0,
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",
