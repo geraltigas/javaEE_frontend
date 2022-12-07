@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
-import LoginView from "@/views/LoginView";
-import Neo4jTest from "@/components/neo4j/Neo4jTest.vue";
+import MainView from "@/pages/main/MainView.vue";
+import GraphView from "@/pages/graph/GraphView.vue";
 
 Vue.use(VueRouter)
 
@@ -10,12 +9,12 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Neo4jTest
+    component: MainView
   },
   {
-    path: '/',
-    name: 'login',
-    component: LoginView
+    path: '/graph/:node_name',
+    name: 'graph',
+    component: GraphView
   }
 ]
 

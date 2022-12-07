@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import Header from "@/components/layout/Header";
-import Main from "@/components/layout/Main";
-import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header.vue";
+import Main from "@/components/layout/Main.vue";
+import Footer from "@/components/layout/Footer.vue";
 export default {
   name: 'HomeView',
   components: {

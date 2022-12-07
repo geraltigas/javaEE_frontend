@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="artical_read">
-              <img class="artical_read_img" src="src/assets/barchart.png" />
+              <img class="artical_read_img" src="../../assets/images/barchart.png" />
               <div class="artical_read_num">
                 {{ item.read }}
               </div>

@@ -5,7 +5,9 @@
 <!--      <router-link to="/about">About</router-link>-->
 <!--    </nav>-->
 <!--    TODO: nav and router link can be used for navigatation-->
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 

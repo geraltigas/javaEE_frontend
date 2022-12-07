@@ -97,7 +97,8 @@ import {
   TooltipComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
-import axios from "axios";
+import {ADD_NODE, ADD_RELATION, GET_GRAPH} from "@/utils/api/graph/graph";
+import {PRINT} from "@/utils/config";
 
 use([
   CanvasRenderer,
@@ -108,23 +109,18 @@ use([
 
 export default {
   name: "HelloWorld",
+  props: {
+    node_name_p: String
+  },
   components: {
     VChart
   },
   provide: {
     // [THEME_KEY]: "dark"
   },
-  beforeCreate() {
-    this.$refs.axios = axios.create({
-      baseURL: "http://localhost:8080",
-      timeout: 1000,
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  },
   beforeMount() {
-    this.init("c")
+    console.log("init node: ", this.node_name_p)
+    this.init(this.node_name_p);
   },
   data() {
     return {
@@ -197,78 +193,139 @@ export default {
   },
   methods: {
     init(name) {
-      this.$refs.axios.get("knowledge?name="+name).then(response => {
-        this.option.series[0].data = response.data.knowledges.map(knowledge => {
-          return {
-            name: knowledge.name,
-            id: knowledge.id+"",
-            description: knowledge.description,
-            symbolSize: 70,
-            itemStyle: {
-              color: "#0090ff"
-            }
-          };
-        });
-        this.option.series[0].links = [...response.data.includes,...response.data.associateds,...response.data.commons,...response.data.preKnowledges].map(item => {
-          return {
-            source: item.source+"",
-            target: item.target+"",
-            type: item.type,
-            description: item.description,
-            label: {
-              show: true,
-              formatter: item => item.data.type
-            },
-            lineStyle: {
-              width: 5,
-              curveness: 0.2,
-              color: (() => {
-                switch (item.type) {
-                  case "include":
-                    return "#0090ff";
-                  case "associated":
-                    return "#ff0000";
-                  case "common":
-                    return "#00ff00";
-                  case "preKnowledge":
-                    return "#ff00ff";
-                  default:
-                    return "#000000";
+      GET_GRAPH({name:name}).then(response=>{
+        PRINT("get graph: ", response)
+            this.option.series[0].data = response.knowledges.map(knowledge => {
+              return {
+                name: knowledge.name,
+                id: knowledge.id+"",
+                description: knowledge.description,
+                symbolSize: 70,
+                itemStyle: {
+                  color: "#0090ff"
                 }
-              })()
-            }
-            // },
+              };
+            })
+            this.option.series[0].links = [...response.includes,...response.associateds,...response.commons,...response.preKnowledges].map(item => {
+              return {
+                source: item.source+"",
+                target: item.target+"",
+                type: item.type,
+                description: item.description,
+                label: {
+                  show: true,
+                  formatter: item => item.data.type
+                },
+                lineStyle: {
+                  width: 5,
+                  curveness: 0.2,
+                  color: (() => {
+                    switch (item.type) {
+                      case "include":
+                        return "#0090ff";
+                      case "associated":
+                        return "#ff0000";
+                      case "common":
+                        return "#00ff00";
+                      case "preKnowledge":
+                        return "#ff00ff";
+                      default:
+                        return "#000000";
+                    }
+                  })()
+                }
+                // },
 
-          }
-        })
-
-        return response.data;
-      });
+              }
+            })
+            return response.data;
+      })
+      // this.$refs.axios.get("knowledge?name="+name).then(response => {
+      //   this.option.series[0].data = response.data.knowledges.map(knowledge => {
+      //     return {
+      //       name: knowledge.name,
+      //       id: knowledge.id+"",
+      //       description: knowledge.description,
+      //       symbolSize: 70,
+      //       itemStyle: {
+      //         color: "#0090ff"
+      //       }
+      //     };
+      //   });
+      //   this.option.series[0].links = [...response.data.includes,...response.data.associateds,...response.data.commons,...response.data.preKnowledges].map(item => {
+      //     return {
+      //       source: item.source+"",
+      //       target: item.target+"",
+      //       type: item.type,
+      //       description: item.description,
+      //       label: {
+      //         show: true,
+      //         formatter: item => item.data.type
+      //       },
+      //       lineStyle: {
+      //         width: 5,
+      //         curveness: 0.2,
+      //         color: (() => {
+      //           switch (item.type) {
+      //             case "include":
+      //               return "#0090ff";
+      //             case "associated":
+      //               return "#ff0000";
+      //             case "common":
+      //               return "#00ff00";
+      //             case "preKnowledge":
+      //               return "#ff00ff";
+      //             default:
+      //               return "#000000";
+      //           }
+      //         })()
+      //       }
+      //       // },
+      //
+      //     }
+      //   })
+      //
+      //   return response.data;
+      // });
     },
     handleEnter() {
       this.init(this.search_node_name)
     },
     addData() {
       if (this.radio === 1) {
-        this.$refs.axios.post("knowledge", {
-          name: this.node_name,
-          description: this.description
-        }).then((res) => {
+        ADD_NODE({name: this.node_name, description: this.description}).then(response => {
           this.node_name = "";
           this.description = "";
-          console.log(typeof res.data.id);
+          console.log(typeof response.data.id);
           this.option.series[0].data = this.option.series[0].data.concat({
-            name: res.data.name+"",
-            id: res.data.id+"",
-            description: res.data.description,
+            name: response.name+"",
+            id: response.id+"",
+            description: response.description,
             symbolSize: 70,
             itemStyle: {
               color: "#0090ff"
             }
           });
-        });
+        })
+        // this.$refs.axios.post("knowledge", {
+        //   name: this.node_name,
+        //   description: this.description
+        // }).then((response) => {
+        //   this.node_name = "";
+        //   this.description = "";
+        //   console.log(typeof response.data.id);
+        //   this.option.series[0].data = this.option.series[0].data.concat({
+        //     name: response.data.name+"",
+        //     id: response.data.id+"",
+        //     description: response.data.description,
+        //     symbolSize: 70,
+        //     itemStyle: {
+        //       color: "#0090ff"
+        //     }
+        //   });
+        // });
       } else {
-        this.$refs.axios.post("relation", {
+        ADD_RELATION({
           knowledgeId: parseInt(this.source_id),
           relatedId: parseInt(this.target_id),
           type: (() => {
@@ -288,16 +345,16 @@ export default {
           description: this.description
         }).then(response => {
           console.log({
-            source: response.data[0].startNodeId,
-            target: response.data[0].endNodeId,
-            type: response.data[0].type,
-            description: response.data[0].description,
+            source: response[0].startNodeId,
+            target: response[0].endNodeId,
+            type: response[0].type,
+            description: response[0].description,
           })
           this.option.series[0].links = this.option.series[0].links.concat({
-            source: response.data[0].startNodeId+"",
-            target: response.data[0].endNodeId+"",
-            type: response.data[0].type,
-            description: response.data[0].description,
+            source: response[0].startNodeId+"",
+            target: response[0].endNodeId+"",
+            type: response[0].type,
+            description: response[0].description,
             label: {
               show: true,
               formatter: item => {
@@ -308,7 +365,7 @@ export default {
               width: 5,
               curveness: 0.2,
               color: (() => {
-                switch (response.data[0].type) {
+                switch (response[0].type) {
                   case "include":
                     return "#0090ff";
                   case "associated":
@@ -326,7 +383,67 @@ export default {
           this.source_id = "";
           this.target_id = "";
           this.description = "";
-        });
+        })
+
+        // this.$refs.axios.post("relation", {
+        //   knowledgeId: parseInt(this.source_id),
+        //   relatedId: parseInt(this.target_id),
+        //   type: (() => {
+        //     switch (this.edge_type) {
+        //       case 1:
+        //         return "include";
+        //       case 2:
+        //         return "associated";
+        //       case 3:
+        //         return "common";
+        //       case 4:
+        //         return "preKnowledge";
+        //       default:
+        //         return "include";
+        //     }
+        //   })(),
+        //   description: this.description
+        // }).then(response => {
+        //   console.log({
+        //     source: response.data[0].startNodeId,
+        //     target: response.data[0].endNodeId,
+        //     type: response.data[0].type,
+        //     description: response.data[0].description,
+        //   })
+        //   this.option.series[0].links = this.option.series[0].links.concat({
+        //     source: response.data[0].startNodeId+"",
+        //     target: response.data[0].endNodeId+"",
+        //     type: response.data[0].type,
+        //     description: response.data[0].description,
+        //     label: {
+        //       show: true,
+        //       formatter: item => {
+        //         return item.data.type
+        //       }
+        //     },
+        //     lineStyle: {
+        //       width: 5,
+        //       curveness: 0.2,
+        //       color: (() => {
+        //         switch (response.data[0].type) {
+        //           case "include":
+        //             return "#0090ff";
+        //           case "associated":
+        //             return "#ff0000";
+        //           case "common":
+        //             return "#00ff00";
+        //           case "preKnowledge":
+        //             return "#ff00ff";
+        //           default:
+        //             return "#000000";
+        //         }
+        //       })()
+        //     }
+        //   });
+        //   this.source_id = "";
+        //   this.target_id = "";
+        //   this.description = "";
+        // });
       }
     },
     onClick(param) {
