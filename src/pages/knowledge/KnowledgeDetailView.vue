@@ -8,7 +8,7 @@
         <div class="knowledge-content">
           <div class="title">
             <div class="title_img">
-            <img src="@/assets/images/Java.png" width="80" @click="clickImg">
+            <img src="@/assets/images/Java.png" width="80">
             <p style="margin-top: 10px">{{knowledgeName}}</p>
             </div>
             <el-button style="margin-right: 10px" type="primary">返回</el-button>
@@ -22,7 +22,7 @@
             <div class="box-card">
               <div v-for="item in lessonlist" :key="item.title" class="item">
                 <div class="list-img">
-                <img :src=item.img style="height: 80%">
+                <img :src=item.img style="height: 80%" @click="clickImg(item.link)">
                 </div>
                 <div class="item-title">
                   <a :href="item.link" :title="item.title" target="_blank">{{item.title}}</a>
@@ -47,7 +47,7 @@
             <div class="box-card">
               <div v-for="item in booklist" :key="item.title" class="item">
                 <div class="list-img">
-                  <img :src=item.coverlink style="height: 80%">
+                  <img :src=item.coverlink style="height: 80%" @click="clickImg(item.url)">
                 </div>
                 <div class="item-title">
                   <a :href="item.url" :title="item.name" target="_blank">{{item.name}}</a>
@@ -61,7 +61,7 @@
             <div class="box-card">
               <div v-for="item in videolist" :key="item.name" class="item">
                 <div class="list-img">
-                  <img :src=item.coverlink style="height: 80%">
+                  <img :src=item.coverlink style="height: 80%" @click="clickImg(item.url)">
                 </div>
                 <div class="item-title">
                   <a :href="item.url" :title="item.title" target="_blank">{{item.name}}</a>
@@ -101,7 +101,7 @@
 <script>
 import Header from "@/components/layout/Header.vue";
 import Footer from "@/components/layout/Footer.vue";
-import {GET_BOOK,GET_VIDEO,GET_LESSON,GET_PROJECT,GET_TUTORIAL} from "@/utils/api/knowledgeDetail";
+import {GET_BOOK,GET_VIDEO,GET_LESSON,GET_PROJECT,GET_TUTORIAL,GET_KNOWLEDGE} from "@/utils/api/knowledgeDetail";
 
 export default {
   name: "KnowledgeDetailView",
@@ -122,6 +122,7 @@ export default {
 data(){
     return{
       knowledgeName: this.$route.params.knowledge_name,
+      knowledgeDetail: GET_KNOWLEDGE(this.id),
       summary: "Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程",
       lessonlist1: GET_LESSON(this.id),
       lessonlist: [
@@ -188,8 +189,8 @@ data(){
     }
 },
   methods: {
-    clickImg(){
-      console.log('lzynb')
+    clickImg(link){
+      console.log(link)
     }
   }
 }

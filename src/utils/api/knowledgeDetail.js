@@ -19,3 +19,7 @@ export const GET_VIDEO = (id) => {
 export const GET_TUTORIAL = (id) => {
     return request('get', `/resource/${id}/tutorials`)
 }
+
+export const GET_KNOWLEDGE = (id) => {
+    return request('get', `/resource/${id}`)
+}
