@@ -110,7 +110,18 @@ use([
 export default {
   name: "HelloWorld",
   props: {
-    node_name_p: String
+    // node_name_p: String
+  },
+  watch: {
+    $route :{
+      handler: function () {
+        console.log("router_param" ,this.$route.params.node_name)
+        PRINT("inside watch")
+        this.node_name_p = this.$route.params.node_name
+        this.init(this.node_name_p)
+      },
+      immediate: true
+    }
   },
   components: {
     VChart
@@ -124,6 +135,7 @@ export default {
   },
   data() {
     return {
+      node_name_p: "",
       option: {
         title: {
           text: "Knowledge Graph",

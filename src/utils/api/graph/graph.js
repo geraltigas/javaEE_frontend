@@ -12,4 +12,8 @@ export const ADD_RELATION = (data) => {
     return request('post', 'relation', data)
 }
 
+export const GET_FIRST25 = () => {
+    return request('get', 'knowledge/first25')
+}
+
 

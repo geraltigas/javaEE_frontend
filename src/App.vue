@@ -15,7 +15,7 @@
 #app {
   width: 100% !important;
   height: 100% !important;
-  margin: 0px;
+  margin: 0;
 }
 .el-link--inner {
   width: 100%!important;
@@ -26,5 +26,13 @@
 }
 body {
   background-color: #f6f7f8;
+  height: 100% !important;
+}
+html {
+  height: 100% !important;
+}
+* {
+  margin: 0;
+  padding: 0;
 }
 </style>
