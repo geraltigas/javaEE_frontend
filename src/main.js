@@ -4,6 +4,12 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import {
+  Table,
+    TableColumn,
+  Button,
+  Card,
+  Tabs,
+    TabPane,
   Carousel,
   CarouselItem,
   Col,
@@ -37,7 +43,12 @@ Vue.use(Footer)
 Vue.use(Input)
 Vue.use(Radio)
 Vue.use(RadioGroup)
-
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Card)
+Vue.use(Button)
+Vue.use(Table)
+Vue.use(TableColumn)
 
 new Vue({
   router,

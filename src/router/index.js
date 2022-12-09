@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainView from "@/pages/main/MainView.vue";
 import GraphView from "@/pages/graph/GraphView.vue";
+import KnowledgeDetailView from "@/pages/knowledge/KnowledgeDetailView.vue";
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/graph/:node_name',
     name: 'graph',
     component: GraphView
+  },
+  {
+    path : '/knowledge/:knowledge_name',
+    name: 'knowledge',
+    component: KnowledgeDetailView
   }
 ]
 
