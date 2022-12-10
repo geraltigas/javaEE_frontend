@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import {
+  Pagination,
   Table,
     TableColumn,
   Button,
@@ -49,6 +50,7 @@ Vue.use(Card)
 Vue.use(Button)
 Vue.use(Table)
 Vue.use(TableColumn)
+Vue.use(Pagination)
 
 new Vue({
   router,

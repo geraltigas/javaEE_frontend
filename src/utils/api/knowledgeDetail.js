@@ -1,25 +1,25 @@
 import request from '@/utils/request'
 
-export const GET_BOOK = (id) => {
-    return request('get', `/resource/${id}/books`)
+export const GET_BOOK = (id,data) => {
+    return request('get', `/resource/${id}/books`,data)
 }
 
-export const GET_PROJECT = (id) => {
-    return request('get', `/resource/${id}/projects`)
+export const GET_PROJECT = (id,data) => {
+    return request('get', `/resource/${id}/projects`,data)
 }
 
-export const GET_LESSON = (id) => {
-    return request('get', `/resource/${id}/lessons`)
+export const GET_LESSON = (id,data) => {
+    return request('get', `/resource/${id}/lessons`,data)
 }
 
-export const GET_VIDEO = (id) => {
-    return request('get', `/resource/${id}/videos`)
+export const GET_VIDEO = (id,data) => {
+    return request('get', `/resource/${id}/videos`,data)
 }
 
-export const GET_TUTORIAL = (id) => {
-    return request('get', `/resource/${id}/tutorials`)
+export const GET_TUTORIAL = (id,data) => {
+    return request('get', `/resource/${id}/tutorials`,data)
 }
 
-export const GET_KNOWLEDGE = (id) => {
-    return request('get', `/resource/${id}`)
+export const GET_KNOWLEDGE = (id,data) => {
+    return request('get', `/resource/${id}`,data)
 }

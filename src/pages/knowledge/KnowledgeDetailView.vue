@@ -17,7 +17,7 @@
         </div>
       </el-container>
       <div class="content">
-        <el-tabs type="border-card" class="resource-box" style="border-radius: 10px">
+        <el-tabs type="border-card" class="resource-box" style="border-radius: 10px" @tab-click="tabClick">
           <el-tab-pane label="网课">
             <div class="box-card">
               <div v-for="item in lessonlist" :key="item.title" class="item">
@@ -91,6 +91,15 @@
       </el-table>
         </div>
       </div>
+      <div class="pages">
+        <el-pagination
+            background
+            layout="prev, pager, next"
+            @current-change="changePage"
+            :current-page="this.pageNum"
+            :total="this.pagesTotal">
+        </el-pagination>
+      </div>
     </el-main>
     <el-footer>
       <Footer></Footer>
@@ -104,6 +113,9 @@ import Footer from "@/components/layout/Footer.vue";
 import {GET_BOOK,GET_VIDEO,GET_LESSON,GET_PROJECT,GET_TUTORIAL,GET_KNOWLEDGE} from "@/utils/api/knowledgeDetail";
 
 export default {
+  mounted() {
+    this.loadingData(this.currentTab);
+  },
   name: "KnowledgeDetailView",
   id: 123,
   components: {
@@ -120,11 +132,15 @@ export default {
     }
   },
 data(){
-    return{
+  return{
+      currentTab:0,
+      pageNum: 1,
+      pageSize: 10,
+      pagesTotal: 500,
       knowledgeName: this.$route.params.knowledge_name,
-      knowledgeDetail: GET_KNOWLEDGE(this.id),
+      knowledgeDetail: GET_KNOWLEDGE(this.id,{pageNum:this.pageNum,pageSize:this.pageSize}),
       summary: "Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程",
-      lessonlist1: GET_LESSON(this.id),
+      lessonlist1: GET_LESSON(this.id,{pageNum:this.pageNum,pageSize:this.pageSize}),
       lessonlist: [
         {
           title: "Java基础语法",
@@ -139,7 +155,7 @@ data(){
           link: "http://www.baidu.com"
         }
       ],
-      projectlist1: GET_PROJECT(this.id),
+      projectlist1: GET_PROJECT(this.id,{pageNum:this.pageNum,pageSize:this.pageSize}),
       projectlist: [
         {
           name: "Javaee项目",
@@ -156,7 +172,7 @@ data(){
 
         }
       ],
-      booklist1: GET_BOOK(this.id),
+      booklist1: GET_BOOK(this.id,{pageNum:this.pageNum,pageSize:this.pageSize}),
       booklist:[
         {
           name: "Java从入门到如土",
@@ -166,7 +182,7 @@ data(){
           publisher: "出版社"
         }
       ],
-      videolist1: GET_VIDEO(this.id),
+      videolist1: GET_VIDEO(this.id,{pageNum:this.pageNum,pageSize:this.pageSize}),
       videolist:[
         {
           name: "Java从入门到如土",
@@ -191,6 +207,27 @@ data(){
   methods: {
     clickImg(link){
       console.log(link)
+    },
+    changePage(val){
+      this.pageNum=val;
+      console.log(this.pageNum)
+    },
+    tabClick(tab){
+      this.currentTab = tab._data.index
+      this.loadingData(this.currentTab)
+      console.log(tab._data.index)
+    }
+  },
+  loadingData(currentTab){
+    switch (currentTab){
+      case 0: this.lessonlist1=GET_LESSON(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+            break;
+      case 1:this.projectlist1=GET_PROJECT(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+            break;
+      case 2:this.booklist1=GET_BOOK(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+            break;
+      case 3:this.videolist1=GET_VIDEO(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+            break;
     }
   }
 }
@@ -288,5 +325,9 @@ a{
   content: "dog";                                    /*before属性中的content文本是用来占位的,必须有*/
   font-size: 20px;                                   /*可以设置字体大小来确定图标大小*/
   visibility: hidden;                                /*使用visibility: hidden;来隐藏文字*/
+}
+.pages{
+  margin-top: 20px;
+  text-align: center;
 }
 </style>
