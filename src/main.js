@@ -18,7 +18,9 @@ import {
   Tag,
   Input,
     Radio,
-    RadioGroup
+    RadioGroup,
+  Pagination,
+    Card
 } from 'element-ui'
 
 Vue.config.productionTip = false
@@ -37,7 +39,8 @@ Vue.use(Footer)
 Vue.use(Input)
 Vue.use(Radio)
 Vue.use(RadioGroup)
-
+Vue.use(Pagination)
+Vue.use(Card)
 
 new Vue({
   router,
