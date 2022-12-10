@@ -11,7 +11,7 @@
             <img src="@/assets/images/Java.png" width="80">
             <p style="margin-top: 10px">{{knowledgeName}}</p>
             </div>
-            <el-button style="margin-right: 10px" type="primary">返回</el-button>
+            <el-button style="margin-right: 10px" type="primary" @click="back">返回</el-button>
           </div>
           <p style="padding-top: 5px">{{summary}}</p>
         </div>
@@ -38,7 +38,10 @@
                   <p class="el-icon-dog"></p>
                   <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
                   <p>{{item.description}}</p>
-                  <p>stars: {{item.stars}}</p>
+                  <div style="display: flex">
+                    <el-tag>stars: {{item.stars}}</el-tag>
+                    <el-tag style="margin-left: 10px">fork: {{item.stars}}</el-tag>
+                  </div>
                 </div>
               </div>
             </div>
@@ -51,8 +54,8 @@
                 </div>
                 <div class="item-title">
                   <a :href="item.url" :title="item.name" target="_blank">{{item.name}}</a>
-                  <p>Author: {{item.author}}</p>
-                  <p>Publisher: {{item.publisher}}</p>
+                  <p><el-tag>Author: {{item.author}}</el-tag></p>
+                  <p><el-tag>Publisher: {{item.publisher}}</el-tag></p>
                 </div>
               </div>
             </div>
@@ -66,7 +69,7 @@
                 <div class="item-title">
                   <a :href="item.url" :title="item.title" target="_blank">{{item.name}}</a>
                   <p>description: {{item.description}}</p>
-                  <p>author: {{item.author}}</p>
+                  <el-tag>author: {{item.author}}</el-tag>
 
                 </div>
               </div>
@@ -76,8 +79,11 @@
         <div class="table">
           <el-table
           :data="tableData"
-          style="width: 100%">
-        <el-table-column
+          style="width: 100%"
+          :header-cell-style="{
+            'background-color': '#1989fa',
+            'color': '#fff'}">
+            <el-table-column
             prop="date"
             label="技术"
             width="100">
@@ -85,7 +91,7 @@
         <el-table-column
             prop="name"
             label="教程名"
-            width="260">
+            width="270">
         </el-table-column>
 
       </el-table>
@@ -206,6 +212,7 @@ data(){
 },
   methods: {
     clickImg(link){
+      window.open(link)
       console.log(link)
     },
     changePage(val){
@@ -216,20 +223,26 @@ data(){
       this.currentTab = tab._data.index
       this.loadingData(this.currentTab)
       console.log(tab._data.index)
-    }
+    },
+    loadingData(currentTab){
+      switch (currentTab){
+        case 0: this.lessonlist1=GET_LESSON(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+          break;
+        case 1:this.projectlist1=GET_PROJECT(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+          break;
+        case 2:this.booklist1=GET_BOOK(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+          break;
+        case 3:this.videolist1=GET_VIDEO(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
+          break;
+      }
+    },
+    back(){
+      window.history.back();
+    },
+
   },
-  loadingData(currentTab){
-    switch (currentTab){
-      case 0: this.lessonlist1=GET_LESSON(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
-            break;
-      case 1:this.projectlist1=GET_PROJECT(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
-            break;
-      case 2:this.booklist1=GET_BOOK(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
-            break;
-      case 3:this.videolist1=GET_VIDEO(this.id,{pageNum:this.pageNum,pageSize:this.pageSize})
-            break;
-    }
-  }
+
+
 }
 </script>
 
@@ -250,6 +263,7 @@ data(){
   padding-top: 20px;
   padding-right: 30px;
 }
+
 .title{
   justify-content: space-between;
   display: flex;
@@ -296,6 +310,9 @@ img{
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 
 }
+::v-deep .el-tabs__nav-scroll{
+  padding: 4px 0;
+}
 a{
   text-decoration: none;
   color: black;
@@ -329,5 +346,8 @@ a{
 .pages{
   margin-top: 20px;
   text-align: center;
+}
+.main_main{
+
 }
 </style>
