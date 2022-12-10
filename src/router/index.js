@@ -5,6 +5,7 @@ import GraphView from "@/pages/graph/GraphView.vue";
 import ProjectsView from "@/pages/projects/ProjectsView";
 import VideosView from "@/pages/videos/VideosView";
 import BooksView from "@/pages/books/BooksView";
+import KnowledgeDetailView from "@/pages/knowledge/KnowledgeDetailView.vue";
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/books',
     name: 'books',
     component: BooksView
+  },
+  {
+    path : '/knowledge/:knowledge_name',
+    name: 'knowledge',
+    component: KnowledgeDetailView
   }
 ]
 
