@@ -20,7 +20,9 @@
         <el-menu-item index="portfolios">
           <el-link type="primary" href="/noteedit">写笔记</el-link>
         </el-menu-item>
-        <el-menu-item index="products">产品</el-menu-item>
+        <el-menu-item index="topic">
+          <router-link :to="{path:'/notedetail'}">博客页面</router-link>
+        </el-menu-item>
         <el-menu-item index="open-data">开放数据</el-menu-item>
       </el-menu>
     </div>

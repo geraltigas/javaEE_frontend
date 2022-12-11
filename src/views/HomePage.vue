@@ -4,6 +4,9 @@
         <Header></Header>
       </el-header>
       <el-main style="width:100%;height:100%">
+        <div style="width:1200px;height:200px;background-color:aquamarine;">知识点</div>
+        <div style="width:300px;height:200px;background-color:aqua;margin-right: 0;right: 0;position: absolute;top: 80px;">网课资源</div>
+        <div style="width:1200px;height:500px;background-color:bisque;">优秀项目推荐</div>
         <Famous class="note"></Famous>
       </el-main>
       <el-footer class="footer">
@@ -38,11 +41,11 @@
   }
   .note {
     position: absolute;
-    right: 0;
+    right: -300px;
     bottom: 0;
-    padding-right: 0;
-    width: 40%;
-    height: 60%;
+    margin-right: 0;
+    width: 600px;
+    height: 600px;
     margin-bottom: 0;
   }
 
