@@ -23,7 +23,9 @@
         <el-menu-item index="topic">
           <router-link :to="{path:'/notedetail'}">博客页面</router-link>
         </el-menu-item>
-        <el-menu-item index="open-data">开放数据</el-menu-item>
+        <el-menu-item index="open-data">
+          <router-link :to="{path:'/test'}">写笔记功能demo在这</router-link>
+        </el-menu-item>
       </el-menu>
     </div>
 

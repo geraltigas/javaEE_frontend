@@ -3,14 +3,19 @@
     <Header></Header>
 
     <div class="m-content">
-
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <div style="height:100px"></div>
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
         <el-form-item label="标题" prop="title">
-          <el-input v-model="ruleForm.title"></el-input>
+          <el-input v-model="ruleForm.title" style="width:600px"></el-input>
         </el-form-item>
 
-        <el-form-item label="内容" prop="content">
-          <mavon-editor v-model="ruleForm.content" style="height:600px"></mavon-editor>
+        <el-form-item label="内容" prop="content" >
+          <mavon-editor v-model="ruleForm.content" :subfield="false"
+                  :defaultOpen="'edit'"
+                  :editable="true"
+                  :toolbarsFlag="true"
+                  style="height:600px;width:600px;margin-left: 50px;">
+          </mavon-editor>
         </el-form-item>
 
         <el-form-item>
@@ -31,7 +36,19 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
   export default {
     name: "noteedit",
-    components:{ mavonEditor },
+    components:{ 
+      mavonEditor,
+      // prop () {
+      //           return {
+      //               subfield: true,// true：双栏(编辑预览同屏)，false： 单栏(编辑预览分屏)
+      //               defaultOpen: 'preview',//edit： 默认展示编辑区域 ， preview： 默认展示预览区域
+      //               editable: false, // 是否允许编辑
+      //               toolbarsFlag: false, // 工具栏
+      //               scrollStyle: false, // 滚动条样式--只支持Chrome
+      //               boxShadow: true//边框阴影
+      //           };
+      //       }
+    },
     data() {
       return {
         ruleForm: {

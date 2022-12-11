@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import NoteEdit from '../views/NoteEdit.vue'
 import NoteDetail from '../views/NoteDetail.vue'
 import MyPage from '../views/MyPage.vue'
+import Test from '../views/Test.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,6 +45,11 @@ const routes = [
     path: '/notedetail',
     name: 'notedetail',
     component: NoteDetail
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: Test
   },
 ]
 
