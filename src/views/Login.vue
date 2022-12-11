@@ -115,6 +115,7 @@ export default {
               if(res.data.status == 200){
                 var userInfo = res.data.data;
                 this.$store.commit('Token', userInfo.token);
+                this.$store.commit('username', this.user.account);
                 Toast({ message: '登录成功', type: 'success',duration: 1500});   // ui弹窗提示
                 if (_ts.historyUrl) {
                   window.location.href = _ts.historyUrl

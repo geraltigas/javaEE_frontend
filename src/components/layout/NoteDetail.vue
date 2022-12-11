@@ -1,4 +1,7 @@
 <template>
+    <div>
+        <h1>{{this.ruleForm.title}}</h1>
+    
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
         <el-form-item label="内容" prop="content">
           <mavon-editor v-model="ruleForm.content" :subfield="false"
@@ -9,6 +12,7 @@
     </mavon-editor>
         </el-form-item>
 </el-form>
+</div>
 </template>
 
 <script>
@@ -21,7 +25,7 @@ export default {
             return {
               ruleForm: {
           id: '',
-          title: '',
+          title: 'title',
           content: '## 父子页面通信\n'
         },
             };
@@ -37,6 +41,22 @@ export default {
                     boxShadow: true//边框阴影
                 };
             }
+        },
+        methods:{
+            getNote(id)
+            {
+                let _ts = this;
+                _ts.loading = true;
+                _ts.$axios.$get('/notes/detail/'+id, {
+                }).then(function (res) {
+                    _ts.loading = false;
+                    this.ruleForm = res.data
+                })
+            }
+        },
+        created()
+        {
+            this.getNote(this.$route.params.id)
         }
     };
 </script>

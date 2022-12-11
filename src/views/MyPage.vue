@@ -1,10 +1,18 @@
 <template>
-    <el-row :gutter="10" class="notice">
+    
+    <el-container>
+        <el-header style="width:100%;margin: 0;padding: 0;top: 0;">
+      <Header></Header>
+    </el-header>
+    <el-main>
+        <div style="display: contents;">
+            <div class="note">
+              <el-row :gutter="10" class="notice ">
     <el-col :span="12">
       <div class="notice_left">
         <div class="notice_title">
           <div class="title_left">
-            <span>最新笔记推荐</span>
+            <span>我的笔记</span>
           </div>
           <div class="title_right">
             <el-link href="/homeview">查看更多 ></el-link>
@@ -21,15 +29,56 @@
       </div>
     </el-col>
   </el-row>
-
-</template>
-
-<script>
-export default {
-  name: 'DashboardAdmin',
-  data() {
-    return {
-      noteList: [
+            </div>
+        <div class="user-info">
+      <div style="margin-left:120px">
+        <img src="https://static.rymcu.com/article/1578475481946.png" alt="" width="50px" height="50px" />
+      </div>
+      <div class="user-main">
+        <div style="color: #999;margin-left: 50px;" >
+          用户名:<span>{{ userInfo.username }}</span>
+        </div>
+        <div style="color: #999;margin-left: 50px;">
+          邮箱:<span>{{ userInfo.email }}</span>
+          <el-button style="margin-left:20px" size="small" type="primary" icon="el-icon-edit" round @click="showEditDialog()"></el-button>
+        </div>
+      </div>
+    </div>
+        </div>
+        <el-dialog
+  title="修改邮箱"
+  :visible.sync="editDialogVisible"
+  width="50%" @close="editDialogClosed">
+  <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="70px" >
+    <el-form-item label="新的邮箱" prop="email">
+      <el-input v-model="email"></el-input>
+    </el-form-item>
+  </el-form>
+  <span slot="footer" class="dialog-footer">
+      <el-button @click="editDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="editUserInfo()">确 定</el-button>
+  </span>
+</el-dialog>
+    </el-main>
+    <el-footer class="footer">
+      <Footer></Footer>
+    </el-footer>
+    </el-container>
+    
+  </template>
+  
+  <script>
+  import Header from "@/components/layout/Header";
+  import Footer from "@/components/layout/Footer";
+  export default {
+    name: 'mypage',
+    components: {
+    Header,
+    Footer
+  },
+    data() {
+      return {
+        noteList: [
       {
           head: "什么是嵌入式系统？",
           short:
@@ -70,21 +119,24 @@ export default {
           read: 123,
         },
       ],
-    }
-  },
-
-  created(){
-    this.initData()
-  },
-  methods: {
-    initData()
-    {
-      this.getNoteList
+        userInfo:{
+          username:'aaaa',
+          email:'1111111@qq.com'
+        },
+        editDialogVisible: false,
+        email:'',
+      }
     },
-    getNoteList() {
+  
+    created(){
+        this.getUser()
+        this.getNoteList()
+    },
+    methods: {
+      getNoteList() {
       let _ts = this;
       _ts.loading = true;
-      _ts.$axios.$get('/notes/get-notes-by-time', {
+      _ts.$axios.$get('/notes/get-user/'+localStorage.getItem('username'), {
       }).then(function (res) {
         _ts.loading = false;
         this.noteList = res.data
@@ -93,14 +145,72 @@ export default {
     showDetail(id)
     {
       this.$router.push("/notedetail/" + id);
+    },
+        editUserInfo()
+        {
+          let _ts = this;
+          _ts.loading = true;
+          if (!this.email) {
+            return false
+          }
+          let data = {
+            email: this.email
+          };
+          _ts.$axios.$patch('/users/change-email', {
+            params: data
+          }).then(function (res) {
+            _ts.loading = false;
+
+          })
+        },
+        showEditDialog()
+        {
+            this.editDialogVisible = true
+        },
+        getUser()
+    {
+      let _ts = this;
+      _ts.loading = true;
+      _ts.$axios.$post('/get-user/'+localStorage.getItem('username'), {
+      }).then(function (res) {
+        _ts.loading = false;
+        this.userInfo = res.data
+        if(this.user == {})
+        {
+          this.loggedIn = false;
+        }else{
+          this.loggedIn = true
+        }
+      })
+    }
     }
   }
+  </script>
+  
+  <style lang="scss" scoped>
+  
+  .footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
-</script>
-
-
-<style lang="scss" scoped>
-.notice {
+.note {
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    width: 1000px;
+    height: 1200px;
+  }
+  .user-info{
+    position: absolute;
+    top: 300px;
+    right: 300px;
+    margin-left: 20px;
+    width: 300px;
+    height: 150px;
+    background-color: white;
+  }
+  .notice {
   padding-bottom: 20px;
   .notice_title {
     display: flex;
@@ -262,4 +372,5 @@ export default {
     border-bottom: 1px solid #f2f2f5 !important;
 }
 
-</style>
+  </style>
+  

@@ -14,7 +14,7 @@
       <div v-for="item in articals" :key="item">
         <div class="artical_flow_item">
           <div class="artical_header">
-            <el-link
+            <el-link @click="showDetail(item.idNote)"
               style="color: black"
               type="primary"
               class="artical_true_head" 
@@ -111,6 +111,28 @@ export default {
       ],
     };
   },
+  created(){
+    this.initData()
+  },
+  methods: {
+    initData()
+    {
+      this.getNoteList()
+    },
+    getNoteList() {
+      let _ts = this;
+      _ts.loading = true;
+      _ts.$axios.$get('/notes/get-notes-by-time', {
+      }).then(function (res) {
+        _ts.loading = false;
+        this.articals = res.data
+      })
+    },
+    showDetail(id)
+    {
+      this.$router.push("/notedetail/" + id);
+    }
+  }
 };
 </script>
 
