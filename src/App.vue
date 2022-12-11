@@ -1,10 +1,5 @@
 <template>
   <div id="app">
-<!--    <nav>-->
-<!--      <router-link to="/">Home</router-link> |-->
-<!--      <router-link to="/about">About</router-link>-->
-<!--    </nav>-->
-<!--    TODO: nav and router link can be used for navigatation-->
     <keep-alive>
       <router-view/>
     </keep-alive>

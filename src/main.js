@@ -17,8 +17,8 @@ import {
   Row,
   Tag,
   Input,
-    Radio,
-    RadioGroup
+  Radio,
+  RadioGroup, Button
 } from 'element-ui'
 
 Vue.config.productionTip = false
@@ -37,6 +37,7 @@ Vue.use(Footer)
 Vue.use(Input)
 Vue.use(Radio)
 Vue.use(RadioGroup)
+Vue.use(Button)
 
 
 new Vue({

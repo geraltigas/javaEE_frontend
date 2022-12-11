@@ -14,7 +14,7 @@ import {
   TooltipComponent
 } from "echarts/components";
 import {GET_GRAPH} from "@/utils/api/graph/graph";
-import {PRINT} from "@/utils/config";
+import {LINE_STYLE, NODE_STYLE, PRINT} from "@/utils/config";
 import VChart from "vue-echarts";
 
 use([
@@ -45,13 +45,11 @@ export default {
             name: knowledge.name,
             id: knowledge.id+"",
             description: knowledge.description,
-            symbolSize: 70,
-            itemStyle: {
-              color: "#0090ff"
-            }
+            symbolSize: knowledge.name === name ? 100 : 70,
+            itemStyle: NODE_STYLE(knowledge,name)
           };
         })
-        this.option.series[0].links = [...response.includes,...response.associateds,...response.commons,...response.preKnowledges].map(item => {
+        this.option.series[0].links = [...response.relations].map(item => {
           return {
             source: item.start+"",
             target: item.end+"",
@@ -61,77 +59,11 @@ export default {
               show: true,
               formatter: item => item.data.type
             },
-            lineStyle: {
-              width: 5,
-              curveness: 0.2,
-              color: (() => {
-                switch (item.type) {
-                  case "include":
-                    return "#0090ff";
-                  case "associated":
-                    return "#ff0000";
-                  case "common":
-                    return "#00ff00";
-                  case "preKnowledge":
-                    return "#ff00ff";
-                  default:
-                    return "#000000";
-                }
-              })()
-            }
-            // },
-
+            lineStyle: LINE_STYLE(item)
           }
         })
         return response.data;
       })
-      // this.$refs.axios.get("knowledge?name="+name).then(response => {
-      //   this.option.series[0].data = response.data.knowledges.map(knowledge => {
-      //     return {
-      //       name: knowledge.name,
-      //       id: knowledge.id+"",
-      //       description: knowledge.description,
-      //       symbolSize: 70,
-      //       itemStyle: {
-      //         color: "#0090ff"
-      //       }
-      //     };
-      //   });
-      //   this.option.series[0].links = [...response.data.includes,...response.data.associateds,...response.data.commons,...response.data.preKnowledges].map(item => {
-      //     return {
-      //       source: item.source+"",
-      //       target: item.target+"",
-      //       type: item.type,
-      //       description: item.description,
-      //       label: {
-      //         show: true,
-      //         formatter: item => item.data.type
-      //       },
-      //       lineStyle: {
-      //         width: 5,
-      //         curveness: 0.2,
-      //         color: (() => {
-      //           switch (item.type) {
-      //             case "include":
-      //               return "#0090ff";
-      //             case "associated":
-      //               return "#ff0000";
-      //             case "common":
-      //               return "#00ff00";
-      //             case "preKnowledge":
-      //               return "#ff00ff";
-      //             default:
-      //               return "#000000";
-      //           }
-      //         })()
-      //       }
-      //       // },
-      //
-      //     }
-      //   })
-      //
-      //   return response.data;
-      // });
     },
     onClick(param) {
       if (param.dataType === "node") {
@@ -180,6 +112,7 @@ export default {
             symbolSize: 70,
             roam: true,
             focusNodeAdjacency: true,
+            draggable: true,
             label: {
               show: true,
               fontSize: 20
@@ -193,10 +126,6 @@ export default {
                   fontSize: 20,
                   color: '#000'
                 },
-                // formatter(x) {
-                //   console.log("formatter: ",x)
-                //   return x.data.type;
-                // }
               }
             },
             categories: [],

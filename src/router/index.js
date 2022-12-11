@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import MainView from "@/pages/main/MainView.vue";
 import GraphView from "@/pages/graph/GraphView.vue";
 import KnowledgeListView from "@/pages/knowledge/KnowledgeListView.vue";
+import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path:'/knowledges',
     name:'knowledges',
     component: KnowledgeListView
+  },
+  {
+    path: '/gadmin',
+    name: 'gadmin',
+    component: Neo4jVisualization
   }
 ]
 
