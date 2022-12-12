@@ -1,4 +1,4 @@
-Directory:
+## Directory:
 ```text
 project
 └───src
@@ -22,10 +22,6 @@ project
 |   |   |    |  edit.vue      // 修改页
 |   |   | main.vue
 |   |
-|   |____server    // 接口层
-|   |   | index.js   // 所有接口
-|   |   | http.js  // axios二次封装
-|   |
 |   |____store     // vuex数据
 |   |   | index.js
 |   |
@@ -40,4 +36,16 @@ project
 │   package.json   // npm配置
 │   README.md      // 项目说明
  
+```
+
+## Dockerfile build
+需要安装docker
+### image build
+请先 npm run build
+```shell
+docker build -f Dockerfile -t my-frontend:v1.0 .
+```
+### container run
+```shell
+docker run -d -p 80:80 --name my-frontend my-frontend:v1.0
 ```
