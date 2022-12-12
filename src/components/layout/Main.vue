@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="artical_read">
-              <img class="artical_read_img" src="../../assets/images/barchart.png" />
+              <img class="artical_read_img" src="../../assets/images/barchart.png"  alt="err"/>
               <div class="artical_read_num">
                 {{ item.read }}
               </div>
@@ -136,7 +136,7 @@ export default {
 }
 .artical_flow_item {
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
   border-radius: 10px;
   padding: 20px;
   display: flex;

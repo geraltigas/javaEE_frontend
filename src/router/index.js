@@ -6,6 +6,8 @@ import ProjectsView from "@/pages/projects/ProjectsView";
 import VideosView from "@/pages/videos/VideosView";
 import BooksView from "@/pages/books/BooksView";
 import KnowledgeDetailView from "@/pages/knowledge/KnowledgeDetailView.vue";
+import KnowledgeListView from "@/pages/knowledge/KnowledgeListView.vue";
+import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
 
 Vue.use(VueRouter)
 
@@ -36,9 +38,19 @@ const routes = [
     component: BooksView
   },
   {
-    path : '/knowledge/:knowledge_name',
+    path: '/knowledge/:knowledge_name',
     name: 'knowledge',
     component: KnowledgeDetailView
+  },
+  {
+    path:'/knowledges',
+    name:'knowledges',
+    component: KnowledgeListView
+  },
+  {
+    path: '/gadmin',
+    name: 'gadmin',
+    component: Neo4jVisualization
   }
 ]
 

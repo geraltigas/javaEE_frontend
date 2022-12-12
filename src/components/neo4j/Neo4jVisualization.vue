@@ -57,11 +57,17 @@
       <div v-else>
         none
       </div>
+      <el-button class="delete" type="primary" @click="deleteThing"> chose and delete</el-button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.delete {
+  position: absolute;
+  top: 40px;
+  right: 0;
+}
 .chart {
   height: 500px;
   width: 100%;
@@ -97,8 +103,8 @@ import {
   TooltipComponent
 } from "echarts/components";
 import VChart from "vue-echarts";
-import {ADD_NODE, ADD_RELATION, GET_GRAPH} from "@/utils/api/graph/graph";
-import {PRINT} from "@/utils/config";
+import {ADD_NODE, ADD_RELATION, DELETE_NODE, DELETE_RELATION, GET_GRAPH} from "@/utils/api/graph/graph";
+import {LINE_STYLE, NODE_STYLE, PRINT} from "@/utils/config";
 
 use([
   CanvasRenderer,
@@ -110,7 +116,18 @@ use([
 export default {
   name: "HelloWorld",
   props: {
-    node_name_p: String
+    // node_name_p: String
+  },
+  watch: {
+    $route :{
+      handler: function () {
+        console.log("router_param" ,this.$route.params.node_name)
+        PRINT("inside watch")
+        this.node_name_p = this.$route.params.node_name
+        this.init(this.node_name_p)
+      },
+      immediate: true
+    }
   },
   components: {
     VChart
@@ -120,10 +137,12 @@ export default {
   },
   beforeMount() {
     console.log("init node: ", this.node_name_p)
-    this.init(this.node_name_p);
+    this.init('c');
   },
   data() {
     return {
+      deleteOn: false,
+      node_name_p: "c",
       option: {
         title: {
           text: "Knowledge Graph",
@@ -143,6 +162,7 @@ export default {
             symbolSize: 70,
             roam: true,
             focusNodeAdjacency: true,
+            draggable: true,
             label: {
               show: true,
               fontSize: 20
@@ -156,10 +176,6 @@ export default {
                   fontSize: 20,
                   color: '#000'
                 },
-                // formatter(x) {
-                //   console.log("formatter: ",x)
-                //   return x.data.type;
-                // }
               }
             },
             categories: [],
@@ -193,6 +209,7 @@ export default {
   },
   methods: {
     init(name) {
+      console.log("init node: ", name)
       GET_GRAPH({name:name}).then(response=>{
         PRINT("get graph: ", response)
             this.option.series[0].data = response.knowledges.map(knowledge => {
@@ -200,93 +217,27 @@ export default {
                 name: knowledge.name,
                 id: knowledge.id+"",
                 description: knowledge.description,
-                symbolSize: 70,
-                itemStyle: {
-                  color: "#0090ff"
-                }
+                symbolSize: knowledge.name === name ? 100 : 70,
+                itemStyle: NODE_STYLE(knowledge,name)
               };
             })
-            this.option.series[0].links = [...response.includes,...response.associateds,...response.commons,...response.preKnowledges].map(item => {
+            this.option.series[0].links = [...response.relations].map(item => {
               return {
-                source: item.source+"",
-                target: item.target+"",
+                source: item.start+"",
+                target: item.end+"",
                 type: item.type,
                 description: item.description,
                 label: {
                   show: true,
                   formatter: item => item.data.type
                 },
-                lineStyle: {
-                  width: 5,
-                  curveness: 0.2,
-                  color: (() => {
-                    switch (item.type) {
-                      case "include":
-                        return "#0090ff";
-                      case "associated":
-                        return "#ff0000";
-                      case "common":
-                        return "#00ff00";
-                      case "preKnowledge":
-                        return "#ff00ff";
-                      default:
-                        return "#000000";
-                    }
-                  })()
-                }
-                // },
+                lineStyle: LINE_STYLE(item)
 
               }
             })
             return response.data;
       })
-      // this.$refs.axios.get("knowledge?name="+name).then(response => {
-      //   this.option.series[0].data = response.data.knowledges.map(knowledge => {
-      //     return {
-      //       name: knowledge.name,
-      //       id: knowledge.id+"",
-      //       description: knowledge.description,
-      //       symbolSize: 70,
-      //       itemStyle: {
-      //         color: "#0090ff"
-      //       }
-      //     };
-      //   });
-      //   this.option.series[0].links = [...response.data.includes,...response.data.associateds,...response.data.commons,...response.data.preKnowledges].map(item => {
-      //     return {
-      //       source: item.source+"",
-      //       target: item.target+"",
-      //       type: item.type,
-      //       description: item.description,
-      //       label: {
-      //         show: true,
-      //         formatter: item => item.data.type
-      //       },
-      //       lineStyle: {
-      //         width: 5,
-      //         curveness: 0.2,
-      //         color: (() => {
-      //           switch (item.type) {
-      //             case "include":
-      //               return "#0090ff";
-      //             case "associated":
-      //               return "#ff0000";
-      //             case "common":
-      //               return "#00ff00";
-      //             case "preKnowledge":
-      //               return "#ff00ff";
-      //             default:
-      //               return "#000000";
-      //           }
-      //         })()
-      //       }
-      //       // },
-      //
-      //     }
-      //   })
-      //
-      //   return response.data;
-      // });
+
     },
     handleEnter() {
       this.init(this.search_node_name)
@@ -296,38 +247,19 @@ export default {
         ADD_NODE({name: this.node_name, description: this.description}).then(response => {
           this.node_name = "";
           this.description = "";
-          console.log(typeof response.data.id);
+          console.log(typeof response.id);
           this.option.series[0].data = this.option.series[0].data.concat({
             name: response.name+"",
             id: response.id+"",
             description: response.description,
             symbolSize: 70,
-            itemStyle: {
-              color: "#0090ff"
-            }
+            itemStyle: NODE_STYLE(response,name)
           });
         })
-        // this.$refs.axios.post("knowledge", {
-        //   name: this.node_name,
-        //   description: this.description
-        // }).then((response) => {
-        //   this.node_name = "";
-        //   this.description = "";
-        //   console.log(typeof response.data.id);
-        //   this.option.series[0].data = this.option.series[0].data.concat({
-        //     name: response.data.name+"",
-        //     id: response.data.id+"",
-        //     description: response.data.description,
-        //     symbolSize: 70,
-        //     itemStyle: {
-        //       color: "#0090ff"
-        //     }
-        //   });
-        // });
       } else {
         ADD_RELATION({
-          knowledgeId: parseInt(this.source_id),
-          relatedId: parseInt(this.target_id),
+          start: parseInt(this.source_id),
+          end: parseInt(this.target_id),
           type: (() => {
             switch (this.edge_type) {
               case 1:
@@ -345,105 +277,28 @@ export default {
           description: this.description
         }).then(response => {
           console.log({
-            source: response[0].startNodeId,
-            target: response[0].endNodeId,
-            type: response[0].type,
-            description: response[0].description,
+            source: response.start,
+            target: response.end,
+            type: response.type,
+            description: response.description,
           })
           this.option.series[0].links = this.option.series[0].links.concat({
-            source: response[0].startNodeId+"",
-            target: response[0].endNodeId+"",
-            type: response[0].type,
-            description: response[0].description,
+            source: response.start+"",
+            target: response.end+"",
+            type: response.type,
+            description: response.description,
             label: {
               show: true,
               formatter: item => {
                 return item.data.type
               }
             },
-            lineStyle: {
-              width: 5,
-              curveness: 0.2,
-              color: (() => {
-                switch (response[0].type) {
-                  case "include":
-                    return "#0090ff";
-                  case "associated":
-                    return "#ff0000";
-                  case "common":
-                    return "#00ff00";
-                  case "preKnowledge":
-                    return "#ff00ff";
-                  default:
-                    return "#000000";
-                }
-              })()
-            }
+            lineStyle: LINE_STYLE(response)
           });
           this.source_id = "";
           this.target_id = "";
           this.description = "";
         })
-
-        // this.$refs.axios.post("relation", {
-        //   knowledgeId: parseInt(this.source_id),
-        //   relatedId: parseInt(this.target_id),
-        //   type: (() => {
-        //     switch (this.edge_type) {
-        //       case 1:
-        //         return "include";
-        //       case 2:
-        //         return "associated";
-        //       case 3:
-        //         return "common";
-        //       case 4:
-        //         return "preKnowledge";
-        //       default:
-        //         return "include";
-        //     }
-        //   })(),
-        //   description: this.description
-        // }).then(response => {
-        //   console.log({
-        //     source: response.data[0].startNodeId,
-        //     target: response.data[0].endNodeId,
-        //     type: response.data[0].type,
-        //     description: response.data[0].description,
-        //   })
-        //   this.option.series[0].links = this.option.series[0].links.concat({
-        //     source: response.data[0].startNodeId+"",
-        //     target: response.data[0].endNodeId+"",
-        //     type: response.data[0].type,
-        //     description: response.data[0].description,
-        //     label: {
-        //       show: true,
-        //       formatter: item => {
-        //         return item.data.type
-        //       }
-        //     },
-        //     lineStyle: {
-        //       width: 5,
-        //       curveness: 0.2,
-        //       color: (() => {
-        //         switch (response.data[0].type) {
-        //           case "include":
-        //             return "#0090ff";
-        //           case "associated":
-        //             return "#ff0000";
-        //           case "common":
-        //             return "#00ff00";
-        //           case "preKnowledge":
-        //             return "#ff00ff";
-        //           default:
-        //             return "#000000";
-        //         }
-        //       })()
-        //     }
-        //   });
-        //   this.source_id = "";
-        //   this.target_id = "";
-        //   this.description = "";
-        // });
       }
     },
     onClick(param) {
@@ -456,13 +311,36 @@ export default {
     nodeClick(param) {
       this.show_data = param.data;
       this.show_mode = 1;
+      this.deleteOn = true;
     },
     edgeClick(param) {
       this.show_data = param.data;
       this.show_mode = 2;
+      this.deleteOn = true;
+    },
+    deleteThing() {
+      if (this.deleteOn) {
+        if (this.show_mode === 1) {
+          DELETE_NODE({id: this.show_data.id}).then(response => {
+            if (response === null) {
+              return
+            }
+            this.option.series[0].data = this.option.series[0].data.filter(item => item.id !== this.show_data.id);
+            this.option.series[0].links = this.option.series[0].links.filter(item => item.source !== this.show_data.id && item.target !== this.show_data.id);
+            this.deleteOn = false;
+          })
+        } else {
+          DELETE_RELATION({start: this.show_data.source, end: this.show_data.target}).then(response => {
+            if (response === null) {
+              return
+            }
+            this.option.series[0].links = this.option.series[0].links.filter(item => item.source !== this.show_data.source || item.target !== this.show_data.target);
+            this.deleteOn = false;
+          })
+        }
+      }
     }
   },
-
 }
 </script>
 

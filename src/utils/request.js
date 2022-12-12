@@ -26,7 +26,6 @@ export default function (method, url, data = null) {
     if (method === 'post') {
         return base_request.post(url, data)
     } else if (method === 'get') {
-        console.log(data)
         return base_request.get(url, { params: data })
     } else if (method === 'delete') {
         return base_request.delete(url, { params: data })

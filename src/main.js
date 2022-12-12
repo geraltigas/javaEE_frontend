@@ -53,6 +53,7 @@ Vue.use(TableColumn)
 Vue.use(Pagination)
 Vue.use(Card)
 
+
 new Vue({
   router,
   store,

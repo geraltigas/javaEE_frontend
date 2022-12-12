@@ -17,6 +17,7 @@ export default {
   beforeMount() {
     console.log("Neo4jTest beforeMount", this.node_name)
   },
+
 }
 </script>
 
