@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
@@ -81,23 +82,22 @@ export default {
   },
   methods: {
     sendCode() {
-      let _ts = this;
-      _ts.loading = true;
-      let email = _ts.forgetForm.email;
+      this.loading = true;
+      let email = this.user.email;
       if (!email) {
         return false
       }
       let data = {
         email: email
       };
-      _ts.$axios.$post('/authenticate/get-forget-password-code', {
+      axios.post('/authenticate/get-email-code', {
         params: data
       }).then(function (res) {
-        _ts.loading = false;
+        this.loading = false;
         // _ts.forget = false;
         if (res) {
           Toast({ message: res.data.message, duration: 1500}); 
-          _ts.$message(res.message)
+          this.$message(res.message)
         }
       })
     },
@@ -128,7 +128,7 @@ export default {
             password: _ts.user.password,
             code: _ts.user.code
           }
-          _ts.$axios.$post('/authenticate/register', data).then(function (res) {
+          axios.post('/authenticate/register', data).then(function (res) {
             _ts.$set(_ts, 'registerLoading', false);
             if (res) {
               _ts.$message("注册成功！");

@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 export default {
@@ -44,11 +45,8 @@ export default {
         methods:{
             getNote(id)
             {
-                let _ts = this;
-                _ts.loading = true;
-                _ts.$axios.$get('/notes/detail/'+id, {
+                axios.get('/notes/detail/'+id, {
                 }).then(function (res) {
-                    _ts.loading = false;
                     this.ruleForm = res.data
                 })
             }

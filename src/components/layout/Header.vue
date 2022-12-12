@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "HeaderView",
   data() {
@@ -108,7 +109,13 @@ export default {
     };
   },
   created(){
-    this.getUser()
+    if(localStorage.getItem('username'))
+    {
+      this.getUser()
+    }
+    else{
+      this.loggedIn = false
+    }
   },
   methods:{
     handleCommand(item) {
@@ -135,11 +142,8 @@ export default {
     },
     getUser()
     {
-      let _ts = this;
-      _ts.loading = true;
-      _ts.$axios.$post('/get-user/'+localStorage.getItem('username'), {
+      axios.post('/get-user/'+localStorage.getItem('username'), {
       }).then(function (res) {
-        _ts.loading = false;
         this.user = res.data
         if(this.user == {})
         {
