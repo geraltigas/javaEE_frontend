@@ -72,6 +72,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
+import axios from 'axios'
 export default {
   name: "login",
   components: {
@@ -107,7 +108,7 @@ export default {
       _ts.$refs.user.validate(async (valid) => {
         if (valid) {
           _ts.$set(_ts, 'loginLoading', true);
-          this.$axios.post('/authenticate/login', 
+          axios.post('/authenticate/login', 
             {
               username:_ts.user.account,
               password: _ts.user.password

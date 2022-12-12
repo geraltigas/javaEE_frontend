@@ -68,6 +68,7 @@
   </template>
   
   <script>
+  import axios from 'axios'
   import Header from "@/components/layout/Header";
   import Footer from "@/components/layout/Footer";
   export default {
@@ -135,10 +136,8 @@
     methods: {
       getNoteList() {
       let _ts = this;
-      _ts.loading = true;
       _ts.$axios.$get('/notes/get-user/'+localStorage.getItem('username'), {
       }).then(function (res) {
-        _ts.loading = false;
         this.noteList = res.data
       })
     },
@@ -148,18 +147,15 @@
     },
         editUserInfo()
         {
-          let _ts = this;
-          _ts.loading = true;
           if (!this.email) {
             return false
           }
           let data = {
             email: this.email
           };
-          _ts.$axios.$patch('/users/change-email', {
+          axios.patch('/users/change-email', {
             params: data
           }).then(function (res) {
-            _ts.loading = false;
             console.log(res)
           })
         },
@@ -170,10 +166,8 @@
         getUser()
     {
       let _ts = this;
-      _ts.loading = true;
       _ts.$axios.$post('/get-user/'+localStorage.getItem('username'), {
       }).then(function (res) {
-        _ts.loading = false;
         this.userInfo = res.data
         if(this.user == {})
         {
