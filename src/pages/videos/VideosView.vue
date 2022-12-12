@@ -1,41 +1,56 @@
 <template>
-<div>
-<HeaderView/>
-  <div class="" id="box">
-    <ul>
-<!--      <li v-for="v in json.list">-->
-<!--        <img v-bind:src="v.src" alt="">-->
-<!--        <h4>{{v.des}}</h4>-->
-<!--        <p>{{v.price}}</p>-->
-<!--      </li>-->
-    </ul>
+  <div>
+    <HeaderView/>
+    <el-card class="box-card container">
+      <VideoItem v-for="video in videos" :item="video" :key="video.id"></VideoItem>
+    </el-card>
+    <el-pagination
+        class="page"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="15"
+        layout="total, prev, pager, next, jumper"
+        :total="400">
+    </el-pagination>
+
+    <FooterView class="footer"/>
   </div>
-<FooterView/>
-</div>
 </template>
 
 <script>
-import HeaderView from "@/components/layout/Header";
 import FooterView from "@/components/layout/Footer";
+import HeaderView from "@/components/layout/Header";
+import VideoItem from "@/pages/videos/VideoItem";
+
 export default {
-  name: "VideoVue",
-  components: {FooterView, HeaderView}
+  name: "VideosView",
+  components:{FooterView, HeaderView, VideoItem},
+  data() {
+    return {
+      videos: [
+        {id:1, title:"jva", coverUrl:'https://z-lib.is/uploads/covers/2022/8afc45931500aab31d03c8db9e85a03e-g.jpg',
+          author:'qweweqq', language: 'Enaglish',fileSize:23,
+          knowledgeList:[{id:1, name: 'java'}]}
+      ]
+    }
+  }
 }
 </script>
 
 <style scoped>
-#box ul{
-  display: flex;
-  flex-wrap: wrap;
+.container {
+  margin-top: 20px;
+  max-width: 60%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
 }
-#box li{
-  padding: 3px;
-  list-style: none;
-  margin-right: 15px;
-  border: 1px solid #eee;
-}
-#box img{
-  width: 200px;
-  height: 150px;
+
+.page {
+  margin-top: 20px;
+  text-align: center;
 }
 </style>

@@ -3,8 +3,7 @@
     <el-header>
       <HeaderView></HeaderView>
     </el-header>
-      <div class="container">
-        <el-card class="box-card">
+        <el-card class="box-card container">
           <ProjectItem v-for="project in projects" :item="project" :key="project.id"></ProjectItem>
         </el-card>
         <el-pagination
@@ -16,7 +15,6 @@
             layout="total, prev, pager, next, jumper"
             :total="400">
         </el-pagination>
-      </div>
 
       <FooterView class="footer"/>
   </div>
@@ -34,7 +32,7 @@ export default {
     return {
       currentPage:1,
       projects: [{id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312"},
-        {id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312", knowledgelist: [{id:1, name: "1231"}]},
+        {id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312", knowledgeList: [{id:1, name: "1231"},{id:2, name: "qweqw"}]},
         {id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312"}]
     }
   },

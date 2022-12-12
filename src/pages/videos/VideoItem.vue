@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="project">
+    <div class="video">
       <div class="item-img">
         <img :src="item.coverUrl" alt="电子书图片" />
       </div>
@@ -26,14 +26,14 @@
           </div>
         </div>
         <div class="item-bottom">
-            <div class="item-stars">
-              <i class="el-icon-collection"></i>
-              {{ item.fileType }}
-            </div>
-            <div class="item-forks" >
-              <i class="el-icon-files"></i>
-              {{ item.fileSize }}
-            </div>
+          <div class="item-stars">
+            <i class="el-icon-collection"></i>
+            {{ item.fileType }}
+          </div>
+          <div class="item-forks" >
+            <i class="el-icon-files"></i>
+            {{ item.fileSize }}
+          </div>
 
           <div class="update-time">
             asdas{{item.publishTime}}
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'BookItem',
+  name: 'VideoItem',
   props:{
     item:{
       type:Object,
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped>
-.project {
+.video {
   width: 100%;
   font-size: 0;
   padding: 5px;

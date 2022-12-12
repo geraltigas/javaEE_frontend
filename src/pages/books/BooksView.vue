@@ -1,10 +1,20 @@
 <template>
   <div>
     <HeaderView/>
-    <el-container>
-      <BookItem v-for="book in books" prop="book" :key="book.id"></BookItem>
-    </el-container>
-    <FooterView/>
+    <el-card class="box-card container">
+      <BookItem v-for="book in books" :item="book" :key="book.id"></BookItem>
+    </el-card>
+    <el-pagination
+        class="page"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="15"
+        layout="total, prev, pager, next, jumper"
+        :total="400">
+    </el-pagination>
+
+    <FooterView class="footer"/>
   </div>
 </template>
 
@@ -20,7 +30,8 @@ export default {
     return {
       books: [
         {id:1, title:"jva", coverUrl:'https://z-lib.is/uploads/covers/2022/8afc45931500aab31d03c8db9e85a03e-g.jpg',
-        knowledge:[{id:1, name: 'java'}]}
+        author:'qweweqq', language: 'Enaglish',fileSize:23,
+          knowledgeList:[{id:1, name: 'java'}]}
       ]
     }
   }
@@ -28,5 +39,18 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  margin-top: 20px;
+  max-width: 60%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: white;
+}
 
+.page {
+  margin-top: 20px;
+  text-align: center;
+}
 </style>
