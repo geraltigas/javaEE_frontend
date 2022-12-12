@@ -14,10 +14,10 @@
       <div v-for="item in articals" :key="item">
         <div class="artical_flow_item">
           <div class="artical_header">
-            <el-link
+            <el-link @click="showDetail(item.idNote)"
               style="color: black"
               type="primary"
-              class="artical_true_head"
+              class="artical_true_head" 
             >
               <h1>{{ item.head }}</h1>
             </el-link>
@@ -49,7 +49,7 @@
               </div>
             </div>
             <div class="artical_read">
-              <img class="artical_read_img" src="../../assets/images/barchart.png"  alt="err"/>
+              <img class="artical_read_img" src="src/assets/barchart.png" />
               <div class="artical_read_num">
                 {{ item.read }}
               </div>
@@ -111,6 +111,28 @@ export default {
       ],
     };
   },
+  created(){
+    this.initData()
+  },
+  methods: {
+    initData()
+    {
+      this.getNoteList()
+    },
+    getNoteList() {
+      let _ts = this;
+      _ts.loading = true;
+      _ts.$axios.$get('/notes/get-notes-by-time', {
+      }).then(function (res) {
+        _ts.loading = false;
+        this.articals = res.data
+      })
+    },
+    showDetail(id)
+    {
+      this.$router.push("/notedetail/" + id);
+    }
+  }
 };
 </script>
 
@@ -136,7 +158,7 @@ export default {
 }
 .artical_flow_item {
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 10px;
   padding: 20px;
   display: flex;
