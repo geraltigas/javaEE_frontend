@@ -13,8 +13,8 @@
         <div class="no_left_massage">
           <ul>
             <li v-for="(item,index) in noteList" :key="index">
-              <p class="com-hover" @click="showDetail(item.idNote)" >{{item.head}}</p>
-              <span class="time">{{item.time}}</span>
+              <p class="com-hover" @click="showDetail(item.idNote)" >{{item.noteTitle}}</p>
+              <span class="time">{{item.createdTime}}</span>
             </li>
           </ul>
         </div>

@@ -13,6 +13,7 @@ import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
 import HomeView from "../pages/notes/HomeView.vue";
 import NoteDetail from "../pages/notes/NoteDetail.vue"
 import MyPage from "../pages/user/MyPage.vue"
+import NoteEdit from "../components/layout/Article.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -75,6 +76,11 @@ const routes = [
     path: '/notedetail/:id',
     name: 'notedetail',
     component: NoteDetail
+  },
+  {
+    path: '/noteedit',
+    name: 'noteedit',
+    component: NoteEdit
   },
   {
     path: '/mypage',
