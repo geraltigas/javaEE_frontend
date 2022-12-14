@@ -1,5 +1,6 @@
 <template>
   <div class="com">
+    <HeaderView></HeaderView>
     <div class="list_container">
       <div @click="naviTo(item)" v-bind:key="index" v-for="(item,index) in knowledgeList" class="knowledge_item effect-2 sub-b" :style="{backgroundColor:COLOR_LIST()[RANDOMINT(0,COLOR_LIST().length-1)]}">
         <div class="font">
@@ -7,6 +8,7 @@
         </div>
       </div>
     </div>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -14,9 +16,12 @@
 import {GET_FIRST25} from "@/utils/api/graph/graph";
 import {COLOR_LIST} from "@/utils/config";
 import {RANDOMINT} from "@/utils/utils";
+import Footer from "@/components/layout/Footer.vue";
+import HeaderView from "@/components/layout/Header.vue";
 
 export default {
   name: "KnowledgeView",
+  components: {HeaderView, Footer},
   methods: {
     RANDOMINT(min,max){
       return RANDOMINT(min,max);

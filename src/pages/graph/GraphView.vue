@@ -1,7 +1,9 @@
 <template>
   <div class="view_container">
+    <HeaderView></HeaderView>
     <v-chart class="chart" :option="option" @click="onClick"/>
     <el-button class="button" type="primary" @click="buttonClick">Detail</el-button>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -17,6 +19,8 @@ import {
 import {GET_GRAPH} from "@/utils/api/graph/graph";
 import {LINE_STYLE, NODE_STYLE, PRINT} from "@/utils/config";
 import VChart from "vue-echarts";
+import HeaderView from "@/components/layout/Header.vue";
+import Footer from "@/components/layout/Footer.vue";
 
 use([
   CanvasRenderer,
@@ -27,7 +31,7 @@ use([
 
 export default {
   name: "GraphView",
-  components: {VChart},
+  components: {Footer, HeaderView, VChart},
   watch: {
     $route :{
       handler: function () {
@@ -70,7 +74,7 @@ export default {
     buttonClick() {
       if (this.show_data !== null) {
         // TODO nav to knowledge detail page
-        console.log(this.show_data.foreignId)
+        this.$router.push({path: "/knowledge/"+this.show_data.name})
       }
     },
     onClick(param) {
@@ -165,16 +169,16 @@ export default {
 <style scoped>
 .button {
   position: absolute;
-  top: 10px;
+  top: 100px;
   right: 10px;
 }
 .chart {
-  height: 92%;
-  width: 92%;
-  padding: 3vw 0 0 3vw;
+  height: 90%;
+  width: 100%;
+  padding: 1vw 0 0 1vw;
 }
 .view_container {
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 98%;
 }
 </style>
