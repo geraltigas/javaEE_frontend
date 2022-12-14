@@ -4,16 +4,15 @@
       <HeaderView></HeaderView>
     </el-header>
         <el-card class="box-card container">
-          <ProjectItem v-for="project in projects" :item="project" :key="project.id"></ProjectItem>
+          <ProjectItem v-for="project in projects" :item="project" :key="project.idProject"></ProjectItem>
         </el-card>
         <el-pagination
             class="page"
-            @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-size="15"
+            :current-page="current"
+            :page-size="pageSize"
             layout="total, prev, pager, next, jumper"
-            :total="400">
+            :total="total">
         </el-pagination>
 
       <FooterView class="footer"/>
@@ -25,24 +24,36 @@
 import ProjectItem from "@/pages/projects/ProjectItem";
 import HeaderView from "@/components/layout/Header";
 import FooterView from "@/components/layout/Footer";
+import {GET_PROJECTS} from "@/utils/api/Resource";
 export default {
-  name: "GraphView",
+  name: "ProjectView",
   components: {FooterView, HeaderView, ProjectItem},
   data(){
     return {
-      currentPage:1,
+      current:0,
+      pageSize: 20,
+      total: 0,
       projects: [{id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312"},
         {id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312", knowledgeList: [{id:1, name: "1231"},{id:2, name: "qweqw"}]},
         {id:1, title:"java", stars: 200, forks: 20, description: "322222", language: "python",updateTime:"21312"}]
     }
   },
   methods: {
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.getProjects(val)
+    },
+    async getProjects(val) {
+      this.current = val
+      const res = await GET_PROJECTS({pageNum:this.current, pageSize:this.pageSize})
+      console.log(res)
+      this.projects = res.records
+      this.total = res.total
+      this.current = res.current
     }
+  },
+  created() {
+    this.getProjects(this.current)
   }
 }
 </script>

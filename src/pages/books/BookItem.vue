@@ -36,7 +36,7 @@
             </div>
 
           <div class="update-time">
-            asdas{{item.publishTime}}
+            {{item.publishDate}}
           </div>
         </div>
       </div>

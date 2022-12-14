@@ -3,12 +3,12 @@
     <div class="project item-info">
       <div class="item-header">
         <div class="item-title">
-          <span>{{ item.title }}</span>
+          <span>{{ item.name }}</span>
           <el-tag style="margin-left: 5px">{{item.language}}</el-tag>
         </div>
-        <div class="knowledge">
-          <el-tag style="margin-left: 5px" v-for="i in item.knowledgeList" :key="i.id">
-            {{i.name}}
+        <div class="knowledge" v-if="item.knowledge.length !== 0">
+          <el-tag style="margin-left: 5px"  v-for="i in item.knowledge" :key="i.idKnowledge">
+            {{i.knowledgeName}}
           </el-tag>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <div class="left-bottom">
           <div class="item-stars">
             <i class="el-icon-star-off"></i>
-            {{ item.stars }}
+            {{ item.starGazers }}
           </div>
           <div class="item-forks" >
             <i class="el-icon-share"></i>
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="update-time">
-          asdas{{item.updateTime}}
+          {{item.updateTime}}
         </div>
       </div>
     </div>

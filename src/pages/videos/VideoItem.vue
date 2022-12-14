@@ -2,7 +2,7 @@
   <div>
     <div class="video">
       <div class="item-img">
-        <img :src="item.coverUrl" alt="电子书图片" />
+        <img :src="item.pic" alt="电子书图片" />
       </div>
       <div class="item-info">
         <div class="item-header">
@@ -10,34 +10,24 @@
             <span>{{ item.title }}</span>
           </div>
           <div class="knowledge">
-            <el-tag style="margin-left: 5px" v-for="i in item.knowledgeList" :key="i.id">
-              {{i.name}}
+            <el-tag style="margin-left: 5px" v-for="i in item.knowledge" :key="i.idKnowledge">
+              {{i.knowledgeName}}
             </el-tag>
           </div>
         </div>
         <div class="item-desc" style="color: #666666;font-size: 14px;">
+          {{ item.description }}
+        </div>
+        <div class="item-bottom">
           <div>
             <i class="el-icon-user-solid"></i>
             {{ item.author }}
           </div>
           <div class="item-forks" >
             <i class="el-icon-notebook-2"></i>
-            {{ item.language }}
-          </div>
-        </div>
-        <div class="item-bottom">
-          <div class="item-stars">
-            <i class="el-icon-collection"></i>
-            {{ item.fileType }}
-          </div>
-          <div class="item-forks" >
-            <i class="el-icon-files"></i>
-            {{ item.fileSize }}
+            {{ item.length }}
           </div>
 
-          <div class="update-time">
-            asdas{{item.publishTime}}
-          </div>
         </div>
       </div>
     </div>

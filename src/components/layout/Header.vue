@@ -114,7 +114,7 @@ export default {
       this.getUser()
     }
     else{
-      this.loggedIn = false
+      this.loggedIn = true
     }
   },
   methods:{
