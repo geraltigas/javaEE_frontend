@@ -1,10 +1,10 @@
 <template>
   <div class="box-card">
-    <div v-for="item in list" :key="item.title" class="item">
-      <div class="list-img">
-        <img :src=item.coverUrl style="height: 80%" @click="clickImg(item.url)">
+    <div v-for="item in list" :key="item.title" class="item" >
+      <div class="list-img" @click="click(item.idBook)">
+        <img :src=item.coverUrl style="height: 80%" >
       </div>
-      <div class="item-title">
+      <div class="item-title" @click="click(item.idBook)">
         <a :href="item.url" :title="item.title" target="_blank">{{item.title}}</a>
 
         <p><el-tag>Author: {{item.author}}</el-tag></p>
@@ -48,11 +48,14 @@ export default {
     async getBookList(val) {
       const res = await GET_BOOK(this.knowledgeId, {pageNum:this.current,pageSize:this.pageSize})
       this.current = val
-      console.log(res);
-      this.list = res.records
+      //console.log(res);
+      this.list = res.data.records
       //this.current = res.current
-      this.pages = res.pages
-      this.total = res.total
+      this.pages = res.data.pages
+      this.total = res.data.total
+    },
+    click(id) {
+      this.$router.push(`/book-detail?id=${id}`)
     }
   }
 }
@@ -66,7 +69,8 @@ export default {
   padding-top: 30px;
   padding-left: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  cursor: pointer;
 }
 .item-title{
   padding-left: 10px;

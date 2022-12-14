@@ -17,7 +17,9 @@
         </div>
       </el-container>
       <div class="content">
-        <el-tabs type="border-card" class="resource-box" style="border-radius: 10px" @tab-click="tabClick">
+        <el-tabs type="border-card" class="resource-box"
+                 style="border-radius: 10px" @tab-click="tabClick"
+        :lazy="true">
           <el-tab-pane label="网课">
               <LessonListView :knowledge-id="id"/>
           </el-tab-pane>
@@ -64,26 +66,26 @@ export default {
     Header,
     Footer
   },
-  created() {
-    const res = GET_KNOWLEDGE(this.id);
-    this.knowledgeName = res.name
-    this.summary = res.description
+  async created() {
+    const res = await GET_KNOWLEDGE(this.$route.params.knowledge_id);
+    this.id= res.data.idKnowledge
+    this.knowledgeName = res.data.knowledgeName
+    this.summary = res.data.knowledgeDescription
 
   },
   watch: {
     $route :{
       handler: function () {
-
-        console.log("router_param" ,this.$route.params.knowledge_name)
+        console.log("router_param" ,this.$route.params.knowledge_id)
       },
       immediate: true
     }
   },
 data(){
   return{
-      id: 4,
+      id: Number(this.$route.params.knowledge_id),
       currentTab:0,
-      knowledgeName: this.$route.params.knowledge_name,
+      knowledgeName: '',
       summary: ''
 
     }
@@ -91,7 +93,6 @@ data(){
   methods: {
     tabClick(tab){
       this.currentTab = tab._data.index
-      this.loadingData(this.currentTab)
       console.log(tab._data.index)
     },
     back(){

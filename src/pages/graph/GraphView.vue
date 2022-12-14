@@ -44,6 +44,7 @@ export default {
           return {
             name: knowledge.name,
             id: knowledge.id+"",
+            foreignId: knowledge.foreignId,
             description: knowledge.description,
             symbolSize: knowledge.name === name ? 100 : 70,
             itemStyle: NODE_STYLE(knowledge,name)
@@ -76,6 +77,8 @@ export default {
       // this.show_data = param.data;
       // this.show_mode = 1;
       PRINT("node click: ", param)
+      console.log(param.foreignId)
+      this.$router.push(`/knowledge/${param.data.foreignId}`)
     },
     edgeClick(param) {
       // this.show_data = param.data;

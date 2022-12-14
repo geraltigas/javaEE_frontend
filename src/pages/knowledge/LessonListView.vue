@@ -38,16 +38,17 @@ export default {
     knowledgeId: Number
   },
   created() {
+    console.log(this.knowledgeId)
     this.getLessonList(this.current)
   },
   methods: {
     async getLessonList(val) {
       this.current = val
       const res = await GET_LESSON(this.knowledgeId, {pageNum:this.current,pageSize:this.pageSize})
-     // console.log(res);
-      this.list = res.records
-      this.current = res.current
-      this.total = res.total
+      console.log(res);
+      this.list = res.data.records
+      this.current = res.data.current
+      this.total = res.data.total
     },
     clickImg(link){
       window.open(link)

@@ -106,7 +106,7 @@ export default {
   },
   created() {
     this.init(this.$route.query.id)
-    this.getReadText()
+    //this.getReadText()
   },
   methods:  {
     getReadText() {

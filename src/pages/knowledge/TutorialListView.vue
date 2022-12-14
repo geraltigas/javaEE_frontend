@@ -39,7 +39,7 @@ export default {
   },
   created() {
     const res = GET_TUTORIAL(this.knowledgeId,{pageNum:this.current,pageSize:this.pageSize})
-    this.tableData = res.records;
+    this.tableData = res.data.records;
     //console.log(this.res)
   },
 

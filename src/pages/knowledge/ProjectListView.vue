@@ -1,9 +1,9 @@
 <template>
   <div class="box-card">
     <div v-for="item in list" :key="item.name" class="project-item" >
-      <div class="item-title">
+      <div class="item-title" @click="click(item.idProject)">
         <p class="el-icon-dog"></p>
-        <a :href="item.link" :title="item.name" target="_blank" >{{item.name}}</a>
+        {{item.name}}
         <p>{{item.description}}</p>
         <div style="display: flex">
           <el-tag>stars: {{item.starGazers}}</el-tag>
@@ -33,7 +33,7 @@ export default {
       list:[],
       current: 0,
       total: 0,
-      pageSize: 10
+      pageSize: 10,
     }
   },
   props: {
@@ -46,9 +46,12 @@ export default {
     async getProjectList(val) {
       this.current = val
       const res = await GET_PROJECT(this.knowledgeId, {pageNum:this.current,pageSize:this.pageSize})
-      this.list = res.records
-      this.current = res.current
-      this.total = res.total
+      this.list = res.data.records
+      this.current = res.data.current
+      this.total = res.data.total
+    },
+    click(id){
+      this.$router.push(`/project-detail?id=${id}`)
     }
   }
 }
@@ -62,7 +65,8 @@ export default {
   padding-top: 0px;
   padding-left: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  cursor: pointer;
 }
 a{
   text-decoration: none;

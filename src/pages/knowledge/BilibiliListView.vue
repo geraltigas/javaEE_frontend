@@ -1,11 +1,11 @@
 <template>
   <div class="box-card">
-    <div v-for="item in list" :key="item.name" class="item">
+    <div v-for="item in list" :key="item.name" class="item" >
       <div class="list-img">
-        <img :src=item.pic style="height: 80%" @click="clickImg(item.url)">
+        <img :src=item.pic style="height: 80%" >
       </div>
       <div class="item-title">
-        <a :href="item.url" :title="item.title" target="_blank">{{item.title}}</a>
+        <a :href="item.url" :title="item.title" @click="clickImg(item.idVideo)" target="_blank">{{item.title}}</a>
         <p>description: {{item.description}}</p>
         <el-tag>author: {{item.author}}</el-tag>
 
@@ -46,14 +46,13 @@ export default {
     async getVideoList(val) {
       this.current = val
       const res = await GET_VIDEO(this.knowledgeId, {pageNum:this.current,pageSize:this.pageSize})
-      console.log(res)
-      this.list = res.records
-      this.current = res.current
-      this.total = res.total
+      //console.log(res)
+      this.list = res.data.records
+      this.current = res.data.current
+      this.total = res.data.total
     },
-    clickImg(link){
-      window.open(link)
-      console.log(link)
+    clickImg(id){
+      this.$router.push(`/video-detail?id=${id}`)
     },
   }
 
@@ -68,7 +67,8 @@ export default {
   padding-top: 30px;
   padding-left: 30px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  cursor: pointer;
 }
 .item-title{
   padding-left: 30px;
