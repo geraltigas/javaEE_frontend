@@ -11,7 +11,7 @@
           </div>
           <div class="knowledge">
             <el-tag style="margin-left: 5px" v-for="i in item.knowledgeList" :key="i.id">
-              {{i.name}}
+              {{i.knowledgeName}}
             </el-tag>
           </div>
         </div>

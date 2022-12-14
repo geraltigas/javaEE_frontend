@@ -1,17 +1,17 @@
 <template>
 <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-col v-for="book in books.records" :key="book.idBook" style="padding-bottom: 1rem;">
-        <book-item :item="book"></book-item>
+      <el-col v-for="project in projects.records" :key="project.idProject" style="padding-bottom: 1rem;">
+        <project-item :item="project"></project-item>
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
           <el-pagination class="page"
                          :hide-on-single-page="true"
                          layout="total, prev, pager, next, jumper"
-                         :page-size="books.size"
-                         :current-page="books.current"
-                         :total="books.total"
+                         :page-size="projects.size"
+                         :current-page="projects.current"
+                         :total="projects.total"
                          prev-text="上一页"
                          next-text="下一页"
                          @current-change="currentChange">
@@ -22,11 +22,11 @@
   </el-row>
 </template>
 <script>
-import BookItem from '@/pages/books/BookItem.vue'
+import ProjectItem from '@/pages/projects/ProjectItem.vue'
 export default {
-    name: 'BookList',
+    name: 'ProjectList',
     props: {
-        books: {
+        projects: {
             type: Object
         }
     },
@@ -36,7 +36,7 @@ export default {
         }
     },
     components: {
-        BookItem
+        ProjectItem
     }
 }
 </script>

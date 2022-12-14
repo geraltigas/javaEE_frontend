@@ -9,10 +9,21 @@
     </el-row>
     <el-row class="wrapper">
         <el-tabs>
-            <el-tab-pane :label="'知识('+1+')'"></el-tab-pane>
-            <el-tab-pane :label="'电子书('+books.total+')'">
-                <book-list :books="books"></book-list>
+            <el-tab-pane :label="'知识点('+total(knowledges)+')'">
+                <knowledge-list :knowledges="knowledges" @currentChange="fetchKnowledge"></knowledge-list>
             </el-tab-pane>
+            <el-tab-pane :label="'项目('+total(projects)+')'">
+                <project-list :projects="projects" @currentChange="fetchProject"></project-list>
+            </el-tab-pane>
+            <el-tab-pane :label="'书籍('+total(books)+')'">
+                <book-list :books="books" @currentChange="fetchBook"></book-list>
+            </el-tab-pane>
+            <el-tab-pane :label="'网课('+total(videos)+')'">
+                <video-list :videos="videos" @currentChange="fetchVideo"></video-list>
+            </el-tab-pane>
+            <!-- <el-tab-pane :label="'笔记('+notes.total+')'">
+                <book-list :notes="books" @currentChange="fetchNote"></book-list>
+            </el-tab-pane> -->
         </el-tabs>
     </el-row>
     </el-main>
@@ -27,13 +38,20 @@ import SearchBox from "@/components/widget/SearchBox.vue"
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BookList from "@/pages/books/BookList";
-import { SEARCH_BOOK } from "@/utils/api/search/search.js";
+import ProjectList from "@/pages/projects/ProjectList";
+import VideoList from "@/pages/videos/VideoList";
+import KnowledgeList from "@/pages/knowledge/KnowledgeList";
+import { SEARCH_KNOWLEDGE, SEARCH_BOOK, SEARCH_PROJECT, SEARCH_VIDEO, SEARCH_NOTE } from "@/utils/api/search/search.js";
 export default {
     name: "SearchView",
     data() {
         return {
             keyword: "",
-            books: {}
+            knowledges: {},
+            books: {},
+            projects: {},
+            videos: {},
+            notes: {}
         };
     },
     methods: {
@@ -44,21 +62,58 @@ export default {
                     q: keyword
                 }
             })
-        }
+        },
+        total(pagination) {
+            if (pagination.total) {
+                return pagination.total;
+            } else {
+                return 0;
+            }
+        },
+        fetchBook(current) {
+            SEARCH_BOOK({keyword:this.keyword, current: current}).then(res => {
+                    this.books = res
+            })
+        },
+        fetchProject(current) {
+            SEARCH_PROJECT({keyword:this.keyword, current: current}).then(res => {
+                    this.projects = res
+            })
+        },
+        fetchVideo(current) {
+            SEARCH_VIDEO({keyword:this.keyword, current: current}).then(res => {
+                    this.videos = res
+            })
+        },
+        fetchKnowledge(current) {
+            SEARCH_KNOWLEDGE({keyword:this.keyword, current: current}).then(res => {
+                    this.knowledges = res
+            })
+        },
+        fetchNote(current) {
+            SEARCH_NOTE({keyword:this.keyword, current: current}).then(res => {
+                    this.notes = res
+            })
+        },
     }, 
     components: {
         SearchBox,
         Header,
         Footer,
-        BookList
+        BookList,
+        ProjectList,
+        VideoList,
+        KnowledgeList
     },
     watch: {
         "$route.query": {
             handler: function() {
                 this.keyword = this.$route.query.q;
-                SEARCH_BOOK({keyword:this.$route.query.q}).then(res => {
-                    this.books = res
-                })
+                this.fetchBook();
+                this.fetchKnowledge();
+                this.fetchProject();
+                this.fetchVideo();
+                this.fetchNote();
             },
             immediate: true,
             deep: true
