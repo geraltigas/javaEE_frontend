@@ -1,6 +1,7 @@
 <template>
   <div class="view_container">
     <v-chart class="chart" :option="option" @click="onClick"/>
+    <el-button class="button" type="primary" @click="buttonClick">Detail</el-button>
   </div>
 </template>
 
@@ -45,6 +46,7 @@ export default {
             name: knowledge.name,
             id: knowledge.id+"",
             description: knowledge.description,
+            foreignId: knowledge.foreignId,
             symbolSize: knowledge.name === name ? 100 : 70,
             itemStyle: NODE_STYLE(knowledge,name)
           };
@@ -65,6 +67,12 @@ export default {
         return response.data;
       })
     },
+    buttonClick() {
+      if (this.show_data !== null) {
+        // TODO nav to knowledge detail page
+        console.log(this.show_data.foreignId)
+      }
+    },
     onClick(param) {
       if (param.dataType === "node") {
         this.nodeClick(param);
@@ -73,8 +81,11 @@ export default {
       }
     },
     nodeClick(param) {
-      // this.show_data = param.data;
-      // this.show_mode = 1;
+      this.show_data = param.data;
+      this.show_mode = 1;
+      if (this.node_name !== this.show_data.name) {
+        this.$router.push({path: '/graph/' + this.show_data.name})
+      }
       PRINT("node click: ", param)
     },
     edgeClick(param) {
@@ -152,6 +163,11 @@ export default {
 </script>
 
 <style scoped>
+.button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 .chart {
   height: 92%;
   width: 92%;

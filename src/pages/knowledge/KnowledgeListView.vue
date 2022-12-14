@@ -1,7 +1,7 @@
 <template>
   <div class="com">
     <div class="list_container">
-      <div @click="naviTo(item)" v-bind:key="index" v-for="(item,index) in knowledgeList" class="knowledge_item" :style="{backgroundColor:COLOR_LIST()[RANDOMINT(0,COLOR_LIST().length-1)]}">
+      <div @click="naviTo(item)" v-bind:key="index" v-for="(item,index) in knowledgeList" class="knowledge_item effect-2 sub-b" :style="{backgroundColor:COLOR_LIST()[RANDOMINT(0,COLOR_LIST().length-1)]}">
         <div class="font">
           {{item.name}}
         </div>
@@ -51,14 +51,59 @@ export default {
 }
 
 .knowledge_item{
-  width: 15vw;
-  height: 15vw;
+  width: 14vw;
+  height: 14vw;
   margin: 2vw 2vw;
-  padding: 2vw;
   border-radius: 2vw;
   backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.knowledge_item:after {
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 2vw;
+  content:'';
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.knowledge_item.effect-2 {
+  color: #eea303;
+  box-shadow: 0 0 0 3px #fff;
+  -webkit-transition: color 0.3s;
+  -moz-transition: color 0.3s;
+  transition: color 0.3s;
+}
+.knowledge_item.effect-2:after {
+  top: -2px;
+  left: -2px;
+  padding: 2px;
+  z-index: -1;
+  background: #fff;
+  -webkit-transition: -webkit-transform 0.2s, opacity 0.2s;
+  -moz-transition: -moz-transform 0.2s, opacity 0.2s;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.knowledge_item.effect-2.sub-b:hover:after {
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  opacity: 0;
+  -webkit-transition: -webkit-transform 0.4s, opacity 0.2s;
+  -moz-transition: -moz-transform 0.4s, opacity 0.2s;
+  transition: transform 0.4s, opacity 0.2s;
+}
+.knowledge_item.effect-2.sub-b:hover, .knowledge_item.effect-2.sub-b:hover i {
+  color: #fff;
 }
 .font{
   -moz-user-select: none;
@@ -77,7 +122,9 @@ export default {
 .list_container{
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  position: relative;
+  width: 80vw;
+  left: 10vw;
   height: 100%;
   padding: 0;
   margin: 0 0 0 3vw;
