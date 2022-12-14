@@ -18,6 +18,7 @@ import ProjectDetailView from "@/pages/projects/ProjectDetailView";
 import VideoPlayView from "@/pages/videos/VideoPlayView";
 import BookDetailView from "@/pages/books/BookDetailView";
 import NoteView from "@/pages/notes/NoteView";
+import SearchView from "@/pages/search/SearchView";
 Vue.use(VueRouter)
 
 const routes = [
@@ -103,6 +104,11 @@ const routes = [
     name: 'MyPage',
     component: MyPage
   },
+  {
+    path: '/search',
+    name: 'SearchView',
+    component: SearchView
+  }
 ]
 
 const router = new VueRouter({
