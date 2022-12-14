@@ -42,7 +42,6 @@ Vue.config.productionTip = false
 
 
 Vue.prototype.$axios = axios
-Vue.use(Toast)
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
