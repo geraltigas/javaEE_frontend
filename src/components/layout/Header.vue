@@ -28,6 +28,7 @@
 
     <el-col :md="10" :span="10" :xs="16" style="line-height: 60px">
         <el-col style="text-align: right;" v-if="loggedIn">
+          <search-box placeholder="搜索" @search="onSearch"></search-box>
           <el-link :underline="false" href="/portfolio/post" rel="nofollow"
                   style="padding-left: 10px;padding-right: 10px;">创建作品集
           </el-link>
@@ -92,6 +93,7 @@
 </template>
 
 <script>
+import SearchBox from "@/components/widget/SearchBox.vue"
 export default {
   name: "HeaderView",
   data() {
@@ -148,7 +150,18 @@ export default {
           this.loggedIn = true
         }
       })
-    }
+    },
+    onSearch(keyword) {
+      this.$router.push({
+        path: `/search`,
+        query: {
+          q: keyword
+        }
+      })
+    },
+  },
+  components: {
+    SearchBox
   }
 }
 </script>

@@ -13,6 +13,7 @@ import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
 import HomeView from "../pages/notes/HomeView.vue";
 import NoteDetail from "../pages/notes/NoteDetail.vue"
 import MyPage from "../pages/user/MyPage.vue"
+import SearchView from "../pages/search/SearchView.vue"
 Vue.use(VueRouter)
 
 const routes = [
@@ -81,6 +82,11 @@ const routes = [
     name: 'MyPage',
     component: MyPage
   },
+  {
+    path: '/search',
+    name: 'SearchView',
+    component: SearchView
+  }
 ]
 
 const router = new VueRouter({
