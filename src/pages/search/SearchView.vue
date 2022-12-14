@@ -27,9 +27,7 @@
         </el-tabs>
       </el-row>
     </el-main>
-    <el-footer>
       <Footer></Footer>
-    </el-footer>
   </el-container>
 </template>
 

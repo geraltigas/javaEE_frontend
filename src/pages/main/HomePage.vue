@@ -5,77 +5,77 @@
     </el-header>
     <el-main style="width:100%;height:100%">
       <div class="upper">
-      <div style="width: 70%;display: flex;margin-left: 30px">
-        <div v-for="item in knowledgelist" :key="item.name" class="knoledge-item">
-          <div class="list-img">
-            <img :src='require(`@/assets/images/cover`+Math.floor((Math.random()*9)+1)+`.png`)' style="width:150px;border-radius: 10px" @click="currentKnowledge(item.knowledgeName)">
-          </div>
-          <div class="item-title">
-            <p @click="currentKnowledge(item.knowledgeName)">{{item.knowledgeName}}</p>
+        <div style="width: 70%;display: flex;margin-left: 30px">
+          <div v-for="item in knowledgelist" :key="item.knowledgeName" class="knowledge-item">
+            <div class="list-img">
+              <img :src='require(`@/assets/images/cover`+Math.floor((Math.random()*9)+1)+`.png`)' style="width:150px;border-radius: 10px" @click="currentKnowledge(item.idKnowledge)">
+            </div>
+            <div class="item-title">
+              <p @click="currentKnowledge(item.idKnowledge)">{{item.knowledgeName}}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div style="background-color:aqua;width: 30%;margin-left: 20px">  <div class="block">
+        <div style="background-color:aqua;width: 30%;margin-left: 20px">  <div class="block">
 
-        <el-carousel height="200px">
-          <el-carousel-item v-for="item in this.videolist" :key="item">
-            <h3 class="small"><img :src="item.pic" style="width: 100%"></h3>
-          </el-carousel-item>
-        </el-carousel>
-      </div></div>
+          <el-carousel height="200px">
+            <el-carousel-item v-for="item in this.videolist" :key="item.idVideo" :trigger="click">
+              <h3 class="small"><img :src="item.pic" @click="clickVideo(item.idVideo)" style="width: 100%"></h3>
+            </el-carousel-item>
+          </el-carousel>
+        </div></div>
       </div>
       <div class="bottom">
-      <div class = "bootom-left" style="width:70%;">
+        <div class = "bootom-left" style="width:70%;">
           <div class="project-title">
             <p style="padding-top: 10px;padding-left: 20px;font-size: 27px">优秀项目</p>
             <div style="padding-right: 10px">
-            <i class="el-icon-arrow-right"></i>
-            <el-button type="text" @click="moreProjects">更多</el-button>
+              <i class="el-icon-arrow-right"></i>
+              <el-button type="text" @click="moreProjects">更多</el-button>
             </div>
           </div>
-        <div v-for="item in projectlist" :key="item.name" class="projectitem" @click="clickProject(item.idProject)" >
-          <div class="item-title">
-            <p class="el-icon-dog"></p>
-            <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
-            <p style="padding-top: 20px;padding-left: 5px;">{{item.description}}</p>
-            <div style="display: flex;padding-top: 30px;">
-              <div>
-                <el-tag v-for="knowledgeItem in item.knowledge" :key="knowledgeItem.knowledgeName" style="padding-left: 10px">
-                  {{knowledgeItem.knowledgeName}}
-                </el-tag>
-              </div>
-              <div>
-              <el-tag>stars: {{item.starGazers}}</el-tag>
-              <el-tag style="margin-left: 10px">fork: {{item.forks}}</el-tag>
+          <div v-for="item in projectlist" :key="item.name" class="projectitem" @click="clickProject(item.idProject)" >
+            <div class="item-title">
+              <p class="el-icon-dog"></p>
+              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
+              <p style="padding-top: 20px;padding-left: 5px;">{{item.description}}</p>
+              <div style="display: flex;padding-top: 30px;">
+                <div>
+                  <el-tag v-for="knowledgeItem in item.knowledge" :key="knowledgeItem.knowledgeName" style="padding-left: 10px">
+                    {{knowledgeItem.knowledgeName}}
+                  </el-tag>
+                </div>
+                <div>
+                  <el-tag>stars: {{item.starGazers}}</el-tag>
+                  <el-tag style="margin-left: 10px">fork: {{item.forks}}</el-tag>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="bottom-right">
-        <div class="project-title">
-          <div style="display: flex">
-          <i class="el-icon-sunny" style="margin-top: 20px;margin-left: 10px"></i>
-          <p style="padding-top: 10px;font-size: 27px">热门笔记</p>
+        <div class="bottom-right">
+          <div class="project-title">
+            <div style="display: flex">
+              <i class="el-icon-sunny" style="margin-top: 20px;margin-left: 10px"></i>
+              <p style="padding-top: 10px;font-size: 27px">热门笔记</p>
+            </div>
+            <div style="padding-right: 10px">
+              <i class="el-icon-arrow-right"></i>
+              <el-button type="text" @click="moreNotes">更多</el-button>
+            </div>
           </div>
-          <div style="padding-right: 10px">
-            <i class="el-icon-arrow-right"></i>
-            <el-button type="text" @click="moreNotes">更多</el-button>
-          </div>
-        </div>
-        <div v-for="item in projectlist" :key="item.name" class="projectitem" >
-          <div class="item-title">
-            <p class="el-icon-dog"></p>
-            <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
-            <p>{{item.description}}</p>
+          <div v-for="item in projectlist" :key="item.name" class="projectitem" >
+            <div class="item-title">
+              <p class="el-icon-dog"></p>
+              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
+              <p>{{item.description}}</p>
 
-            <div style="display: flex;">
-              <el-tag><i class="el-icon-view"></i>{{item.stars}}</el-tag>
-              <el-tag style="margin-left: 10px"><i class="el-icon-thumb"></i>{{item.stars}}</el-tag>
+              <div style="display: flex;">
+                <el-tag><i class="el-icon-view"></i>{{item.stars}}</el-tag>
+                <el-tag style="margin-left: 10px"><i class="el-icon-thumb"></i>{{item.stars}}</el-tag>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </el-main>
     <el-footer class="footer">
@@ -117,9 +117,14 @@ export default {
       const res = await GET_KNOWLEDGE({pageNum: this.knowledgePageNum});
       this.knowledgePages = res.data.pages;
       this.knowledgelist = res.data.records;
+      console.log(this.knowledgelist)
     },
-    currentKnowledge(name){
-      this.$router.push(Login);
+    currentKnowledge(id){
+      console.log(id)
+      this.$router.push(`/knowledge/${id}`);
+    },
+    clickVideo(id) {
+      this.$router.push(`/video-detail?id=${id}`);
     },
     async getProjectData(){
       const res = await GET_PROJECT();
@@ -140,7 +145,7 @@ export default {
       this.$router.push('/notes');
     }
 
-    },
+  },
 
   data(){
     return{
@@ -156,7 +161,7 @@ export default {
 
     }
   }
-  }
+}
 
 
 
@@ -193,7 +198,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
 }
-.knoledge-item{
+.knowledge-item{
   padding-top: 10px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);

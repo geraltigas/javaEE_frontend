@@ -2,18 +2,20 @@
   <div id="video_detail" style="padding-right: 40px; padding-left: 40px; padding-bottom: 50px;">
     <HeaderView/>
     <el-card>
-      <div id="video_player" style="padding-right: 200px; padding-left: 200px; padding-bottom: 50px;">
+      <div>
+
+
+      <div id="video_player" style="padding-right: 200px; padding-left: 200px; padding-bottom: 50px; display: flex;">
 
         <iframe
             :src="videoLink"
                 scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
                 controls width="1080" height="720" ref="videoPlay">
         </iframe>
-<!--        <iframe-->
-<!--            ref="videoPlay"-->
-<!--            :src="this.currentVideo.url"-->
-<!--            controls width="1080" height="720"-->
-<!--        ></iframe>-->
+        <el-card style="width: 30%; margin-left: 40px">
+          <span>视频选集</span>
+        </el-card>
+      </div>
       </div>
       <div id="video_descriptiom">
         <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
@@ -66,7 +68,8 @@ export default {
   el: "#book_detail",
   data() {
     return {
-      page: 1,
+      current: 1,
+      page: {},
       currentVideo: {
         id: 0,           // 视频id
         title: '',        // 标题
@@ -99,10 +102,11 @@ export default {
   },
   created() {
     this.init(this.$route.query.id)
+    //this.getPages()
   },
   computed: {
     videoLink() {
-      return `https://player.bilibili.com/player.html?aid=861181459&bvid=${this.currentVideo.bvid}&cid=921346910&page=${this.page}`
+      return `https://player.bilibili.com/player.html?aid=861181459&bvid=${this.currentVideo.bvid}&cid=921346910&page=${this.current}`
     }
   },
   methods: {
@@ -112,6 +116,13 @@ export default {
             this.currentVideo = Object.assign({}, response.data)
           })
           .catch(e => self.$message.error(e.response.data));
+    },
+    getPages() {
+      axios.get(`https://api.bilibili.com/x/web-interface/view?bvid=${this.currentVideo.bvid}`)
+          .then((response) => {
+              this.page = response.data.data
+              console.log(this.page)
+          })
     },
     tagRowClassName(index) {
       if (index % 5 === 0) {
