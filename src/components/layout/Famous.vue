@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'DashboardAdmin',
   data() {
@@ -82,11 +83,8 @@ export default {
       this.getNoteList
     },
     getNoteList() {
-      let _ts = this;
-      _ts.loading = true;
-      _ts.$axios.$get('/notes/get-notes-by-time', {
+      axios.get('/notes/get-notes-by-time', {
       }).then(function (res) {
-        _ts.loading = false;
         this.noteList = res.data
       })
     },

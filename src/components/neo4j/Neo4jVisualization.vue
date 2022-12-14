@@ -202,7 +202,7 @@ export default {
       source_id:"",
       target_id:"",
       edge_type:1,
-      show_data:{},
+      show_data: null,
       show_mode:0,
       search_node_name:"",
     };

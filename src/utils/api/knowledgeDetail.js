@@ -19,7 +19,6 @@ export const GET_VIDEO = (id,data) => {
 export const GET_TUTORIAL = (id,data) => {
     return request('get', `/resource/${id}/tutorials`,data)
 }
-
-export const GET_KNOWLEDGE = (id,data) => {
-    return request('get', `/resource/${id}`,data)
+export const GET_KNOWLEDGE = (id) => {
+    return request('get', `/mysql-knowledge/${id}`, null)
 }

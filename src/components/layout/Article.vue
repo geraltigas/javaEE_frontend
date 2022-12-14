@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
   export default {
@@ -72,7 +73,7 @@ import "mavon-editor/dist/css/index.css";
     },
     methods: {
       submitForm(formName) {
-        this.$axios.post('/notes/post', 
+        axios.post('/notes/post', 
             {
               Title:this.ruleForm.title,
               Content:this.ruleForm.content,
@@ -103,7 +104,7 @@ import "mavon-editor/dist/css/index.css";
       console.log(blogId)
       const _this = this
       if(blogId) {
-        this.$axios.get('/blog/' + blogId).then(res => {
+        axios.get('/blog/' + blogId).then(res => {
           const blog = res.data.data
           _this.ruleForm.id = blog.id
           _this.ruleForm.title = blog.title
