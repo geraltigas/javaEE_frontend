@@ -41,7 +41,7 @@ Vue.use(VueMarkdownEditor);
 Vue.config.productionTip = false
 
 
-Vue.prototype.$http = axios;
+Vue.prototype.$axios = axios
 Vue.use(Toast)
 Vue.config.productionTip = false
 
@@ -65,7 +65,7 @@ Vue.use(ElementUI);
 
 
 // 配置公共url
-axios.defaults.baseURL = "http://localhost:7092"
+axios.defaults.baseURL = "http://localhost:8080"
 //添加请求拦截器
 axios.interceptors.request.use(
   config =>{

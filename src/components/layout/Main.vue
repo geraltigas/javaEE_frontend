@@ -11,7 +11,7 @@
       </el-carousel-item>
     </el-carousel>
     <div class="artical_flow">
-      <div v-for="item in articals" :key="item">
+      <div v-for="(item,index) in articals" :key="index">
         <div class="artical_flow_item">
           <div class="artical_header">
             <el-link @click="showDetail(item.idNote)"
@@ -19,16 +19,12 @@
               type="primary"
               class="artical_true_head" 
             >
-              <h1>{{ item.head }}</h1>
+              <h1>{{ item.noteTitle }}</h1>
             </el-link>
-            <div class="artical_tags">
-              <div v-for="tag in item.tags" :key="tag">
-                <el-tag type="primary">{{ tag }}</el-tag>
-              </div>
-            </div>
+            
           </div>
           <div class="artical_short">
-            {{ item.short }}
+            {{ item.notePreviewContent }}
           </div>
           <div class="artical_user">
             <div class="artical_user_info">
@@ -41,17 +37,11 @@
               </div>
               <div class="artical_user_right">
                 <div class="artical_user_name">
-                  {{ item.user.name }}
+                  {{ item.username }}
                 </div>
                 <div class="artical_time">
-                  {{ item.time }}
+                  {{ item.createdTime }}
                 </div>
-              </div>
-            </div>
-            <div class="artical_read">
-              <img class="artical_read_img" src="src/assets/barchart.png" />
-              <div class="artical_read_num">
-                {{ item.read }}
               </div>
             </div>
           </div>
@@ -64,6 +54,7 @@
 <script>
 import axios from 'axios'
 import CarouselItem from "@/components/main/CarouselItem";
+axios.defaults.timeout = 100000
 export default {
   name: "MainView",
   components: { CarouselItem },
@@ -121,10 +112,12 @@ export default {
       this.getNoteList()
     },
     getNoteList() {
-      axios.get('/notes/get-notes-by-time', {
-      }).then(function (res) {
-        this.articals = res.data
-      })
+      axios.get('/notes/get-notes-by-time').then((res) =>{
+          this.articals = res.data
+            }).catch(err => {
+              // 报错
+              console.log(err)
+            })
     },
     showDetail(id)
     {

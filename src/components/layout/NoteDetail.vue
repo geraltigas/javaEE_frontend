@@ -3,7 +3,7 @@
         <h1>{{this.ruleForm.title}}</h1>
     
 <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
-        <el-form-item label="内容" prop="content">
+        <el-form-item prop="content">
           <mavon-editor v-model="ruleForm.content" :subfield="false"
                   :defaultOpen="'preview'"
                   :editable="false"
