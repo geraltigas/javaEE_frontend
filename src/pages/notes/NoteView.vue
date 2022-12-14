@@ -17,7 +17,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Main from "@/components/layout/Main";
 export default {
-  name: 'HomeView',
+  name: 'NoteView',
   components: {
     Header,
     Main,

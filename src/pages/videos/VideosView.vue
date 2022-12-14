@@ -2,7 +2,11 @@
   <div>
     <HeaderView/>
     <el-card class="box-card container">
-      <VideoItem v-for="video in videos" :item="video" :key="video.id"></VideoItem>
+      <VideoItem
+          v-for="video in videos"
+          :item="video" :key="video.idVideo"
+          @click.native="clickItem(video.idVideo)"
+      ></VideoItem>
     </el-card>
     <el-pagination
         class="page"
@@ -43,9 +47,14 @@ export default {
     async getVideos(val) {
       const res = await GET_VIDEOS({pageNum: val, pageSize: this.pageSize})
       console.log(res)
-      this.videos = res.records
-      this.current = res.current
-      this.total = res.total
+      this.videos = res.data.records
+      this.current = res.data.current
+      this.total = res.data.total
+    },
+    clickItem(val) {
+      this.$router.push({
+        path: `video-detail?id=${val}`
+      })
     }
   }
 }

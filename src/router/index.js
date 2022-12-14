@@ -10,10 +10,14 @@ import Register from '../pages/user/Register.vue'
 import KnowledgeDetailView from "@/pages/knowledge/KnowledgeDetailView.vue";
 import KnowledgeListView from "@/pages/knowledge/KnowledgeListView.vue";
 import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
-import HomeView from "../pages/notes/HomeView.vue";
+import HomeView from "../pages/notes/NoteView.vue";
 import NoteDetail from "../pages/notes/NoteDetail.vue"
 import MyPage from "../pages/user/MyPage.vue"
 import NoteEdit from "../components/layout/Article.vue"
+import ProjectDetailView from "@/pages/projects/ProjectDetailView";
+import VideoPlayView from "@/pages/videos/VideoPlayView";
+import BookDetailView from "@/pages/books/BookDetailView";
+import NoteView from "@/pages/notes/NoteView";
 Vue.use(VueRouter)
 
 const routes = [
@@ -43,9 +47,21 @@ const routes = [
     component: BooksView
   },
   {
-    path: '/knowledge/:knowledge_name',
+    path: '/knowledge/:knowledge_id',
     name: 'knowledge',
     component: KnowledgeDetailView
+  },
+  {
+    path: '/project-detail',
+    component: ProjectDetailView
+  },
+  {
+    path: '/video-detail',
+    component: VideoPlayView
+  },
+  {
+    path: '/book-detail',
+    component: BookDetailView
   },
   {
     path:'/knowledges',
@@ -68,9 +84,9 @@ const routes = [
     component: Register
   },
   {
-    path: '/homeview',
-    name: 'home',
-    component: HomeView
+    path: '/notes',
+    name: 'note',
+    component: NoteView
   },
   {
     path: '/notedetail/:id',

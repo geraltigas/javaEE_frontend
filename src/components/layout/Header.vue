@@ -13,18 +13,20 @@
         <el-menu-item index="index">
           <el-link type="success" href="/">首页</el-link>
         </el-menu-item>
-        <el-menu-item index="topic">
-          <router-link :to="{path:'/projects'}">项目</router-link>
-          <!-- <el-link type="primary" href="/homeview">博客页面</el-link> -->
+        <el-menu-item index="knowledge">
+          <el-link type="success" href="/knowledges">学习</el-link>
         </el-menu-item>
-        <el-menu-item index="portfolios">
-          <el-link type="primary" href="/videos">视频</el-link>
+        <el-menu-item index="projects">
+          <el-link type="success" href="/projects">项目</el-link>
         </el-menu-item>
-        <el-menu-item index="topic">
-          <router-link :to="{path:'/books'}">电子书</router-link>
+        <el-menu-item index="videos">
+          <el-link type="success" href="/videos">视频</el-link>
         </el-menu-item>
-        <el-menu-item index="topic">
-          <router-link :to="{path:'/homeview'}">笔记</router-link>
+        <el-menu-item index="books">
+          <el-link type="success" href="/books">电子书</el-link>
+        </el-menu-item>
+        <el-menu-item index="notes">
+          <el-link type="success" href="/notes">笔记</el-link>
         </el-menu-item>
       </el-menu>
     </div>

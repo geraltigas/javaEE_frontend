@@ -39,8 +39,8 @@ export default {
   methods:{
     init(name) {
       GET_GRAPH({name:name}).then(response=>{
-        PRINT("get graph: ", response)
-        this.option.series[0].data = response.knowledges.map(knowledge => {
+        PRINT("get graph: ", response.data)
+        this.option.series[0].data = response.data.knowledges.map(knowledge => {
           return {
             name: knowledge.name,
             id: knowledge.id+"",
@@ -49,7 +49,7 @@ export default {
             itemStyle: NODE_STYLE(knowledge,name)
           };
         })
-        this.option.series[0].links = [...response.relations].map(item => {
+        this.option.series[0].links = [...response.data.relations].map(item => {
           return {
             source: item.start+"",
             target: item.end+"",

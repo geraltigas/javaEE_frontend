@@ -108,9 +108,9 @@ export default {
       _ts.$refs.user.validate(async (valid) => {
         if (valid) {
           _ts.$set(_ts, 'loginLoading', true);
-          axios.post('/authenticate/login', 
+          axios.post('/authenticate/login',
             {
-              username:_ts.user.account,
+              email:_ts.user.account,
               password: _ts.user.password
             }).then((res) =>{
               if(res.data.status == 200){
@@ -160,7 +160,7 @@ export default {
         _ts.loading = false;
         // _ts.forget = false;
         if (res) {
-          Toast({ message: res.data.message, duration: 1500}); 
+          Toast({ message: res.data.message, duration: 1500});
           _ts.$message(res.message)
         }
       })

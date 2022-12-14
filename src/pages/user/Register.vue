@@ -15,6 +15,10 @@
                   { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }]">
           <el-input v-model="user.email" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="用户名" prop="name"
+                      :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+          <el-input v-model="user.name" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="密码" prop="password"
                       :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
           <el-input type="password" v-model="user.password" autocomplete="off" show-password></el-input>
@@ -59,6 +63,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
+import {GET_CODE} from "@/utils/api/user";
 export default {
   name: "register",
   components: {
@@ -68,6 +73,7 @@ export default {
   data() {
     return {
       user: {
+        name:'',
         email: '',
         code: '',
         password: '',
@@ -89,16 +95,25 @@ export default {
       let data = {
         email: email
       };
-      axios.post('/authenticate/get-email-code', {
-        params: data
-      }).then(function (res) {
-        this.loading = false;
-        // _ts.forget = false;
-        if (res) {
-          Toast({ message: res.data.message, duration: 1500}); 
-          this.$message(res.message)
-        }
-      })
+      GET_CODE(data).then(
+          (value) => {
+            this.loading = false;
+            // _ts.forget = false;
+            if (value) {
+              Toast({message: value.data.message, duration: 1500});
+              this.$message(value.message)
+            }
+          },
+          (error) => {
+            console.log(error)
+          }
+      )
+      // axios.post('/authenticate/get-email-code', {
+      //   params: data
+      // }).then(function (res) {
+      //
+      //   }
+      // })
     },
     timerHandler() {
       let _ts = this;
@@ -123,9 +138,10 @@ export default {
             _ts.$set(_ts, 'registerLoading', false);
           }, 10000);
           let data = {
+            username: _ts.user.name,
             email: _ts.user.email,
             password: _ts.user.password,
-            code: _ts.user.code
+            verificationCode: _ts.user.code
           }
           axios.post('/authenticate/register', data).then(function (res) {
             _ts.$set(_ts, 'registerLoading', false);

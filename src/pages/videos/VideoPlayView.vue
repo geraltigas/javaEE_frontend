@@ -1,12 +1,19 @@
 <template>
   <div id="video_detail" style="padding-right: 40px; padding-left: 40px; padding-bottom: 50px;">
+    <HeaderView/>
     <el-card>
       <div id="video_player" style="padding-right: 200px; padding-left: 200px; padding-bottom: 50px;">
+
         <iframe
-            ref="videoPlay"
-            :src="this.currentBook.url"
-            controls width="1080" height="720"
-        ></iframe>
+            :src="videoLink"
+                scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
+                controls width="1080" height="720" ref="videoPlay">
+        </iframe>
+<!--        <iframe-->
+<!--            ref="videoPlay"-->
+<!--            :src="this.currentVideo.url"-->
+<!--            controls width="1080" height="720"-->
+<!--        ></iframe>-->
       </div>
       <div id="video_descriptiom">
         <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
@@ -44,32 +51,29 @@
         <NoteEdit></NoteEdit>
       </div>
     </div>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import NoteEdit from "@/components/layout/Article";
+import HeaderView from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 export default {
   name: "VideoPlayView",
+  components: {Footer, HeaderView, NoteEdit},
   el: "#book_detail",
   data() {
     return {
+      page: 1,
       currentVideo: {
-        id: '1',           // 视频id
-        title: '黑马程序员新版Linux零基础快速入门到精通',        // 标题
-        url: 'https://player.bilibili.com/player.html?aid=604566039&bvid=BV1n84y1i7td&cid=877088830&page=1',     // 视频链接
-        author: '黑马程序员',       // 作者
-        description: '本套课程设计为零基础快速入门Linux操作系统系列课程，服务零基础学员为设计基石。课程在基础的Linux系统知识之外，规划了《全方向》涉及到的Linux所需软件服务的部署实战，无论从事Java后端、大数据开发、测试、运维等方向，均可从中受益。课程以Shell脚本、Python脚本自动化为基点，设计了大规模大数据集群部署、运维、监控、自动化项目实战，一站式收获知识和经验。并且课程结合了当下最新的云平台技术，为大家带来了Linux操作系统云上实践环节。',    // 描述信息
-        knowledeges: [{
-          id: '1',                   // 知识点id
-          knowledgeName: 'Java EE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        }, {
-          id: '2',                   // 知识点id
-          knowledgeName: 'Java SE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        }],
+        id: 0,           // 视频id
+        title: '',        // 标题
+        bvid: '',     // 视频链接
+        author: '',       // 作者
+        description: '',
+        knowledge: [],
         key: Date.now()
       },
       CS: {
@@ -91,6 +95,14 @@ export default {
         'word-break': 'keep-all',
         'width': '150px'
       }
+    }
+  },
+  created() {
+    this.init(this.$route.query.id)
+  },
+  computed: {
+    videoLink() {
+      return `https://player.bilibili.com/player.html?aid=861181459&bvid=${this.currentVideo.bvid}&cid=921346910&page=${this.page}`
     }
   },
   methods: {

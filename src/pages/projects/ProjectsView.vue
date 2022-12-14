@@ -4,7 +4,12 @@
       <HeaderView></HeaderView>
     </el-header>
         <el-card class="box-card container">
-          <ProjectItem v-for="project in projects" :item="project" :key="project.idProject"></ProjectItem>
+          <ProjectItem
+              v-for="project in projects"
+              :item="project"
+              :key="project.idProject"
+              @click.native = "clickItem(project.idProject)"
+          ></ProjectItem>
         </el-card>
         <el-pagination
             class="page"
@@ -40,16 +45,20 @@ export default {
   },
   methods: {
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.getProjects(val)
     },
     async getProjects(val) {
       this.current = val
       const res = await GET_PROJECTS({pageNum:this.current, pageSize:this.pageSize})
       console.log(res)
-      this.projects = res.records
-      this.total = res.total
-      this.current = res.current
+      this.projects = res.data.records
+      this.total = res.data.total
+      this.current = res.data.current
+    },
+    clickItem(id) {
+      this.$router.push({
+        path: `/project-detail?id=${id}`
+      })
     }
   },
   created() {
