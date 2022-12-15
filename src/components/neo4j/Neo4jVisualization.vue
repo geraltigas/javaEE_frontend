@@ -23,7 +23,7 @@
                   class="node_name_textarea"
                   placeholder="description"
                   v-model="description"
-                  maxlength="30"
+                  maxlength="100"
                   show-word-limit
               />
             </div>
