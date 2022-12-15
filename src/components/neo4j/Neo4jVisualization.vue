@@ -1,97 +1,153 @@
 <template>
   <div>
-    <el-input class="head_input" v-model="search_node_name" placeholder="search node name" @keyup.enter.native="handleEnter"></el-input>
-    <v-chart class="chart" :option="option" @click="onClick"/>
-    <div class="graph_panel">
-      <div class="add">
-        <el-radio-group v-model="radio">
-          <el-radio :label="1">Node</el-radio>
-          <el-radio :label="2">Edge</el-radio>
-        </el-radio-group>
-        <button @click="addData">Add {{radio===1?"Node":"Edge"}}</button>
-        <div>
-          <div v-if="radio===1">
-            <el-input v-model="node_name" placeholder="node name"/>
-            <el-input
-                type="textarea"
-                placeholder="description"
-                v-model="description"
-                maxlength="30"
-                show-word-limit
-            />
+
+    <div class="main_con">
+      <v-chart class="chart" :option="option" @click="onClick"/>
+      <div class="graph_panel">
+        <div class="edit_panel">Edit Panel</div>
+        <div class="input">
+          <el-input class="head_input" v-model="search_node_name" placeholder="search node name" @keyup.enter.native="handleEnter"></el-input>
+          <el-button class="delete" type="primary" @click="deleteThing">Click Node and Delete</el-button>
+        </div>
+        <div class="add">
+          <el-radio-group v-model="radio">
+            <el-radio :label="1">Node</el-radio>
+            <el-radio :label="2">Edge</el-radio>
+          </el-radio-group>
+          <el-button class="add_button" type="primary" @click="addData">Add {{radio===1?"Node":"Edge"}}</el-button>
+          <div>
+            <div v-if="radio===1">
+              <el-input class="node_name_input" v-model="node_name" placeholder="node name"/>
+              <el-input
+                  type="textarea"
+                  class="node_name_textarea"
+                  placeholder="description"
+                  v-model="description"
+                  maxlength="30"
+                  show-word-limit
+              />
+            </div>
+            <div v-else>
+              <el-input class="node_name_input" v-model="source_id" placeholder="source node id"/>
+              <el-input class="node_name_input" v-model="target_id" placeholder="target node id"/>
+              <el-radio-group v-model="edge_type">
+                <el-radio :label="1">include</el-radio>
+                <el-radio :label="2">preKnowledge</el-radio>
+                <el-radio :label="3">common</el-radio>
+                <el-radio :label="4">associated</el-radio>
+              </el-radio-group>
+              <el-input
+                  type="textarea"
+                  placeholder="description"
+                  class="node_name_textarea"
+                  v-model="description"
+                  maxlength="30"
+                  show-word-limit
+              />
+            </div>
           </div>
-          <div v-else>
-            <el-input v-model="source_id" placeholder="source node id"/>
-            <el-input v-model="target_id" placeholder="target node id"/>
-            <el-radio-group v-model="edge_type">
-              <el-radio :label="1">include</el-radio>
-              <el-radio :label="2">preKnowledge</el-radio>
-              <el-radio :label="3">common</el-radio>
-              <el-radio :label="4">associated</el-radio>
-            </el-radio-group>
-            <el-input
-                type="textarea"
-                placeholder="description"
-                v-model="description"
-                maxlength="30"
-                show-word-limit
-            />
+        </div>
+        <div class="update" v-if="show_mode !== 0">
+          <div class="update_node" v-if="show_mode===1">
+            <h2>Update Node</h2>
+            <h3>Node Id: {{show_data.id}}</h3>
+            <h3>Node Name: {{show_data.name}}</h3>
+            <h4>Node Description: {{show_data.description}}</h4>
+          </div>
+          <div class="update_edge" v-else>
+            <h2>Update Edge</h2>
+            <h3>Source Node Id: {{show_data.source}}</h3>
+            <h3>Target Node Id: {{show_data.target}}</h3>
+            <h3>Edge Type: {{show_data.type}}</h3>
+            <h4>Edge Description: {{show_data.description}}</h4>
           </div>
         </div>
-      </div>
-      <div class="update" v-if="show_mode !== 0">
-        <div class="update_node" v-if="show_mode===1">
-          <h2>Update Node</h2>
-          <h3>Node Id: {{show_data.id}}</h3>
-          <h3>Node Name: {{show_data.name}}</h3>
-          <h4>Node Description: {{show_data.description}}</h4>
-        </div>
-        <div class="update_edge" v-else>
-          <h2>Update Edge</h2>
-          <h3>Source Node Id: {{show_data.source}}</h3>
-          <h3>Target Node Id: {{show_data.target}}</h3>
-          <h3>Edge Type: {{show_data.type}}</h3>
-          <h4>Edge Description: {{show_data.description}}</h4>
+        <div v-else class="update">
+          none
         </div>
       </div>
-      <div v-else>
-        none
-      </div>
-      <el-button class="delete" type="primary" @click="deleteThing"> chose and delete</el-button>
     </div>
   </div>
 </template>
 
 <style scoped>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
 .delete {
-  position: absolute;
-  top: 40px;
-  right: 0;
+  width: 12vw;
 }
-.chart {
-  height: 500px;
-  width: 100%;
+.node_name_input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 30vw;
 }
-.graph_panel{
-  width: 100%;
-  height: 190px;
-  background-color: #cdffe9;
-  display: flex;
-  flex-direction: row;
+.node_name_textarea{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 45vw;
+}
+.add_button {
+  margin-left: 10px;
+}
+.edit_panel {
+  font-family: 'Open Sans';
+  font-size: 40px;
+  position: relative;
+  margin-left: 10px;
+}
+.head_input {
+  width: 19vw;
+  margin-right: 10px;
 }
 .add {
-  width: 50%
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.update {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.input {
+  margin: 10px;
+  width: 32vw;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.main_con {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.chart {
+  height: 95vh;
+  width: 50vw;
+}
+.graph_panel{
+  width: 50%;
+  height: 97vh;
+  background-color: #ededed;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  position: relative;
+  top: 10px;
+  right: 10px;
 }
 .update {
   width: 50%
 }
-.head_input {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 500px;
-  z-index: 100;
-}
+/*.head_input {*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  right: 0;*/
+/*  width: 500px;*/
+/*  z-index: 100;*/
+/*}*/
 </style>
 
 <script>
@@ -136,8 +192,8 @@ export default {
     // [THEME_KEY]: "dark"
   },
   beforeMount() {
-    console.log("init node: ", this.node_name_p)
-    this.init('c');
+    // console.log("init node: ", this.node_name_p)
+    // this.init('c');
   },
   data() {
     return {
@@ -212,6 +268,7 @@ export default {
       console.log("init node: ", name)
       GET_GRAPH({name:name}).then(response=>{
         PRINT("get graph: ", response)
+        response = response.data
             this.option.series[0].data = response.knowledges.map(knowledge => {
               return {
                 name: knowledge.name,
@@ -232,7 +289,6 @@ export default {
                   formatter: item => item.data.type
                 },
                 lineStyle: LINE_STYLE(item)
-
               }
             })
             return response.data;
