@@ -70,7 +70,7 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped >
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 .delete {
   width: 12vw;
