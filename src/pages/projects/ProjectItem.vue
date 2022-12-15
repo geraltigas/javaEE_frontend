@@ -6,7 +6,7 @@
           <span>{{ item.name }}</span>
           <el-tag style="margin-left: 5px">{{item.language}}</el-tag>
         </div>
-        <div class="knowledge" v-if="item.knowledge.length !== 0">
+        <div class="knowledge" >
           <el-tag style="margin-left: 5px"  v-for="i in item.knowledge" :key="i.idKnowledge">
             {{i.knowledgeName}}
           </el-tag>
@@ -62,6 +62,7 @@ export default {
 .item-header {
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 .item-title {
   overflow: hidden;

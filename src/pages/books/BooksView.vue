@@ -2,7 +2,10 @@
   <div>
     <HeaderView/>
     <el-card class="box-card container">
-      <BookItem v-for="book in books" :item="book" :key="book.id"></BookItem>
+      <BookItem v-for="book in books"
+                :item="book" :key="book.idBook"
+                @click.native="clickItem(book.idBook)"
+      ></BookItem>
     </el-card>
     <el-pagination
         class="page"
@@ -41,11 +44,17 @@ export default {
   methods: {
     async getBooks(val) {
       const res = await GET_BOOKS({pageNum: val, pageSize: this.pageSize})
-      this.books = res.records
-      this.current = res.current
-      this.total = res.total
+      this.books = res.data.records
+      this.current = res.data.current
+      this.total = res.data.total
+    },
+    clickItem(val) {
+      this.$router.push({
+        path:`/book-detail?id=${val}`
+      })
     }
-  }
+  },
+
 }
 </script>
 

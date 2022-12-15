@@ -32,7 +32,7 @@
         <el-descriptions-item>
           <template slot="label"><i class="el-icon-notebook-1"></i>知识点</template>
           <el-tag
-              v-for="(knowledege, index) in this.currentBook.knowledeges"
+              v-for="(knowledege, index) in this.currentBook.knowledge"
               :key="index"
               :type="tagRowClassName(index)">
             {{knowledege.knowledgeName}}
@@ -52,22 +52,17 @@ export default {
   data() {
     return {
       currentBook: {
-        id: '1',           // 书籍id
-        title: 'Java™ Platform, Enterprise Edition (Java EE) Specification 8.0',        // 标题
-        coverUrl: 'https://libgen.rocks/covers/2346000/2d0d59290c8adb2789da0c25757ad1d3.jpg',     // 封面url
-        author: 'Linda DeMichiel, Bill Shannon (Oracle',       // 作者
-        publisher: 'Oracle',    // 出版商
-        language: 'English',     // 语言
-        downloadUrl: 'https://libgen.rocks/get.php?md5=2d0d59290c8adb2789da0c25757ad1d3&key=YM0NRXS05FVHESHN',  // 下载地址
-        knowledeges: [{
-          id: '1',                   // 知识点id
-          knowledgeName: 'Java EE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        },{
-          id: '2',                   // 知识点id
-          knowledgeName: 'Java SE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        }],
+        idBook: 0,           // 书籍id
+        title: '',        // 标题
+        coverUrl: '',     // 封面url
+        author: '',       // 作者
+        publisher: '',    // 出版商
+        language: '',     // 语言
+        fileSize: '',
+        fileType: '',
+        publicDate: '',
+        url: 'https://libgen.rocks/get.php?md5=2d0d59290c8adb2789da0c25757ad1d3&key=YM0NRXS05FVHESHN',  // 下载地址
+        knowledge: [],
         key: Date.now()
       },
       CS: {
@@ -91,9 +86,12 @@ export default {
       }
     }
   },
+  created() {
+    this.init(this.$route.query.id)
+  },
   methods:  {
-    init(id_book){
-      axios.get('/books/' + id_book)
+    init(id){
+      axios.get('/books/' + id)
           .then(response=>{this.currentBook = Object.assign({}, response.data)})
           .catch(e => self.$message.error(e.response.data));
     },

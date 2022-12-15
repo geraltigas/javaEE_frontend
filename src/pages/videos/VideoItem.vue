@@ -74,7 +74,7 @@ export default {
   text-overflow: ellipsis;
   font-weight: bold;
   margin-bottom: 10px;
-
+  cursor: pointer;
 }
 .item-img img {
   width: 80px;

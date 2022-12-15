@@ -8,7 +8,7 @@ import store from './store'
 import 'element-ui/lib/theme-chalk/index.css';
 import { Toast } from 'mint-ui';
 import axios from 'axios';
-import 'mint-ui/lib/style.css'; 
+import 'mint-ui/lib/style.css';
 
 
 
@@ -41,8 +41,7 @@ Vue.use(VueMarkdownEditor);
 Vue.config.productionTip = false
 
 
-Vue.prototype.$http = axios;
-Vue.use(Toast)
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
@@ -62,10 +61,36 @@ Vue.use(ElementUI);
 //   }
 // })
 
+//封装成一个指令,highlight是指令的名称
+Vue.directive('highlight', (el) => {
+  let blocks = el.querySelectorAll('pre code')
+  blocks.forEach((block) => {
+
+    // 创建ol标签元素
+    let ol = document.createElement("ol");
+
+    // 2.根据换行符获取行数，根据获取的行数生成行号
+    let rowCount = block.outerHTML.split('\n').length;
+    for(let i=1;i < rowCount;i++){
+      // 创建li标签元素
+      let li = document.createElement("li");
+      let text = document.createTextNode(i);
+      // 将生成的行号添加到li标签中
+      li.appendChild(text);
+      // 将li标签添加到ol标签中
+      ol.appendChild(li);
+    }
+    // 为ol标签添加class名
+    ol.className = 'pre-numbering';
+    block.parentNode.appendChild(ol);
+
+    hljs.highlightBlock(block)
+  })
+})
 
 
 // 配置公共url
-axios.defaults.baseURL = "http://localhost:7092"
+axios.defaults.baseURL = "http://localhost:8080"
 //添加请求拦截器
 axios.interceptors.request.use(
   config =>{

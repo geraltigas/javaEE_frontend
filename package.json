@@ -13,6 +13,7 @@
     "core-js": "^3.8.3",
     "element-ui": "^2.15.12",
     "less-loader": "^11.1.0",
+    "marked": "^4.2.4",
     "mavon-editor": "^2.10.4",
     "mint-ui": "^2.2.13",
     "register-service-worker": "^1.7.2",

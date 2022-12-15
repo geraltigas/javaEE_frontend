@@ -26,10 +26,10 @@
     </el-col>
     <el-col :xs="24" :sm="12" :xl="12" class="intro vditor-reset verify__sign">
       <div>
-        <h2>欢迎来到 RYMCU</h2>
-        <p><a rel="nofollow" href="/">RYMCU</a> 是一个嵌入式知识学习交流平台，专注于单片机学习。</p>
-        <p>我们正在构建一个小众社区。大家在这里相互<strong>信任</strong>，以<em>平等 • 自由 • 奔放</em>的价值观进行分享交流。最终，希望大家能够找到与自己志同道合的伙伴，共同成长。</p>
-        <p>最后请大家共同爱护这个<i>自由</i>的交流环境，相信这里一定是你注册过的所有社区中用户体验最好的 😍</p>
+        <h2>欢迎来到 Learneur</h2>
+        <p><a rel="nofollow" href="/">Lerneur</a> 是一个自主学习平台。</p>
+        <p>我们正在构建一个知识平台。大家在这里<strong>自由学习</strong>，以<em>平等 • 自由 • 奔放</em>的价值观进行分享交流。最终，希望大家能够学习到自己需要的知识，丰富自己。</p>
+        <p>最后请大家共同爱护这个<i>自由</i>的学习环境，相信这里一定是你注册过的所有平台中用户体验最好的 😍</p>
       </div>
     </el-col>
     <el-dialog
@@ -108,9 +108,9 @@ export default {
       _ts.$refs.user.validate(async (valid) => {
         if (valid) {
           _ts.$set(_ts, 'loginLoading', true);
-          axios.post('/authenticate/login', 
+          axios.post('/authenticate/login',
             {
-              username:_ts.user.account,
+              email:_ts.user.account,
               password: _ts.user.password
             }).then((res) =>{
               if(res.data.status == 200){
@@ -160,7 +160,7 @@ export default {
         _ts.loading = false;
         // _ts.forget = false;
         if (res) {
-          Toast({ message: res.data.message, duration: 1500}); 
+          Toast({ message: res.data.message, duration: 1500});
           _ts.$message(res.message)
         }
       })

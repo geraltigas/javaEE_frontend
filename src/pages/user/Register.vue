@@ -15,6 +15,10 @@
                   { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }]">
           <el-input v-model="user.email" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="用户名" prop="name"
+                      :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+          <el-input v-model="user.name" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="密码" prop="password"
                       :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
           <el-input type="password" v-model="user.password" autocomplete="off" show-password></el-input>
@@ -40,11 +44,10 @@
     </el-col>
     <el-col :xs="24" :sm="12" :xl="12" class="intro vditor-reset verify__sign">
       <div>
-        <h2>欢迎来到 RYMCU</h2>
-        <p><a rel="nofollow" href="/">RYMCU</a> 是一个嵌入式知识学习交流平台，专注于单片机学习。</p>
-        <p>我们正在构建一个小众社区。大家在这里相互<strong>信任</strong>，以<em>平等 • 自由 • 奔放</em>的价值观进行分享交流。最终，希望大家能够找到与自己志同道合的伙伴，共同成长。
-        </p>
-        <p>最后请大家共同爱护这个<i>自由</i>的交流环境，相信这里一定是你注册过的所有社区中用户体验最好的 😍</p>
+        <h2>欢迎来到 Learneur</h2>
+        <p><a rel="nofollow" href="/">Lerneur</a> 是一个自主学习平台。</p>
+        <p>我们正在构建一个知识平台。大家在这里<strong>自由学习</strong>，以<em>平等 • 自由 • 奔放</em>的价值观进行分享交流。最终，希望大家能够学习到自己需要的知识，丰富自己。</p>
+        <p>最后请大家共同爱护这个<i>自由</i>的学习环境，相信这里一定是你注册过的所有平台中用户体验最好的 😍</p>
       </div>
     </el-col>
   </el-row>
@@ -60,6 +63,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
+import {GET_CODE} from "@/utils/api/user";
 export default {
   name: "register",
   components: {
@@ -69,6 +73,7 @@ export default {
   data() {
     return {
       user: {
+        name:'',
         email: '',
         code: '',
         password: '',
@@ -90,16 +95,25 @@ export default {
       let data = {
         email: email
       };
-      axios.post('/authenticate/get-email-code', {
-        params: data
-      }).then(function (res) {
-        this.loading = false;
-        // _ts.forget = false;
-        if (res) {
-          Toast({ message: res.data.message, duration: 1500}); 
-          this.$message(res.message)
-        }
-      })
+      GET_CODE(data).then(
+          (value) => {
+            this.loading = false;
+            // _ts.forget = false;
+            if (value) {
+              Toast({message: value.data.message, duration: 1500});
+              this.$message(value.message)
+            }
+          },
+          (error) => {
+            console.log(error)
+          }
+      )
+      // axios.post('/authenticate/get-email-code', {
+      //   params: data
+      // }).then(function (res) {
+      //
+      //   }
+      // })
     },
     timerHandler() {
       let _ts = this;
@@ -124,9 +138,10 @@ export default {
             _ts.$set(_ts, 'registerLoading', false);
           }, 10000);
           let data = {
+            username: _ts.user.name,
             email: _ts.user.email,
             password: _ts.user.password,
-            code: _ts.user.code
+            verificationCode: _ts.user.code
           }
           axios.post('/authenticate/register', data).then(function (res) {
             _ts.$set(_ts, 'registerLoading', false);

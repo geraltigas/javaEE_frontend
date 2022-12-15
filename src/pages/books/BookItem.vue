@@ -77,6 +77,7 @@ export default {
 .item-header {
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 .item-title {
   overflow: hidden;

@@ -15,3 +15,4 @@ export const GET_BOOKS = (data) => {
 export const GET_NOTES = (data) => {
     return request('GET', '/notes', data)
 }
+

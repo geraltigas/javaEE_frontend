@@ -1,9 +1,6 @@
 <template>
   <div class="view_container">
-    <HeaderView></HeaderView>
     <v-chart class="chart" :option="option" @click="onClick"/>
-    <el-button class="button" type="primary" @click="buttonClick">Detail</el-button>
-    <Footer></Footer>
   </div>
 </template>
 
@@ -19,8 +16,6 @@ import {
 import {GET_GRAPH} from "@/utils/api/graph/graph";
 import {LINE_STYLE, NODE_STYLE, PRINT} from "@/utils/config";
 import VChart from "vue-echarts";
-import HeaderView from "@/components/layout/Header.vue";
-import Footer from "@/components/layout/Footer.vue";
 
 use([
   CanvasRenderer,
@@ -31,7 +26,7 @@ use([
 
 export default {
   name: "GraphView",
-  components: {Footer, HeaderView, VChart},
+  components: {VChart},
   watch: {
     $route :{
       handler: function () {
@@ -44,18 +39,18 @@ export default {
   methods:{
     init(name) {
       GET_GRAPH({name:name}).then(response=>{
-        PRINT("get graph: ", response)
-        this.option.series[0].data = response.knowledges.map(knowledge => {
+        PRINT("get graph: ", response.data)
+        this.option.series[0].data = response.data.knowledges.map(knowledge => {
           return {
             name: knowledge.name,
             id: knowledge.id+"",
-            description: knowledge.description,
             foreignId: knowledge.foreignId,
+            description: knowledge.description,
             symbolSize: knowledge.name === name ? 100 : 70,
             itemStyle: NODE_STYLE(knowledge,name)
           };
         })
-        this.option.series[0].links = [...response.relations].map(item => {
+        this.option.series[0].links = [...response.data.relations].map(item => {
           return {
             source: item.start+"",
             target: item.end+"",
@@ -71,12 +66,6 @@ export default {
         return response.data;
       })
     },
-    buttonClick() {
-      if (this.show_data !== null) {
-        // TODO nav to knowledge detail page
-        this.$router.push({path: "/knowledge/"+this.show_data.name})
-      }
-    },
     onClick(param) {
       if (param.dataType === "node") {
         this.nodeClick(param);
@@ -85,12 +74,11 @@ export default {
       }
     },
     nodeClick(param) {
-      this.show_data = param.data;
-      this.show_mode = 1;
-      if (this.node_name !== this.show_data.name) {
-        this.$router.push({path: '/graph/' + this.show_data.name})
-      }
+      // this.show_data = param.data;
+      // this.show_mode = 1;
       PRINT("node click: ", param)
+      console.log(param.foreignId)
+      this.$router.push(`/knowledge/${param.data.foreignId}`)
     },
     edgeClick(param) {
       // this.show_data = param.data;
@@ -167,18 +155,13 @@ export default {
 </script>
 
 <style scoped>
-.button {
-  position: absolute;
-  top: 100px;
-  right: 10px;
-}
 .chart {
-  height: 90%;
-  width: 100%;
-  padding: 1vw 0 0 1vw;
+  height: 92%;
+  width: 92%;
+  padding: 3vw 0 0 3vw;
 }
 .view_container {
-  height: 90%;
-  width: 98%;
+  height: 100%;
+  width: 100%;
 }
 </style>

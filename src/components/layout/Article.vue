@@ -19,7 +19,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm()">立即创建</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -72,23 +72,19 @@ import "mavon-editor/dist/css/index.css";
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm() {
         axios.post('/notes/post', 
             {
-              Title:this.ruleForm.title,
-              Content:this.ruleForm.content,
+              noteTitle:this.ruleForm.title,
+              notePreviewContent:this.ruleForm.content,
+              idResources:1,
+              username:localStorage.getItem('username')
             }).then((res) =>{
                 //处理成功后的逻辑
                 console.log(res)
               this.$alert('操作成功', '提示', {
                 confirmButtonText: '确定',
-                callback: action => {
-                  this.$router.push(
-                {
-                  name: 'login'
-                }
-              )
-                }
+                
               });
             }).catch(err => {
               // 报错
@@ -100,18 +96,18 @@ import "mavon-editor/dist/css/index.css";
       }
     },
     created() {
-      const blogId = this.$route.params.blogId
-      console.log(blogId)
-      const _this = this
-      if(blogId) {
-        axios.get('/blog/' + blogId).then(res => {
-          const blog = res.data.data
-          _this.ruleForm.id = blog.id
-          _this.ruleForm.title = blog.title
-          _this.ruleForm.description = blog.description
-          _this.ruleForm.content = blog.content
-        })
-      }
+      // const blogId = this.$route.params.blogId
+      // console.log(blogId)
+      // const _this = this
+      // if(blogId) {
+      //   axios.get('/blog/' + blogId).then(res => {
+      //     const blog = res.data.data
+      //     _this.ruleForm.id = blog.id
+      //     _this.ruleForm.title = blog.title
+      //     _this.ruleForm.description = blog.description
+      //     _this.ruleForm.content = blog.content
+      //   })
+      // }
 
     }
   }

@@ -1,5 +1,6 @@
 <template>
   <div id="project_detail" style="padding-right: 40px; padding-left: 40px; padding-bottom: 50px;">
+    <HeaderView></HeaderView>
     <el-card>
       <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
         <el-descriptions-item>
@@ -20,14 +21,14 @@
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label"><i class="el-icon-notebook-1"></i>语言</template>
-          <el-tag v-for="(l, index) in this.currentProject.language" :key="index" :type="tagRowClassName(index)">{{l}}</el-tag>
+          <el-tag>{{currentProject.language}}</el-tag>
         </el-descriptions-item>
       </el-descriptions>
       <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
         <el-descriptions-item>
           <template slot="label"><i class="el-icon-notebook-1"></i>知识点</template>
           <el-tag
-              v-for="(knowledege, index) in this.currentProject.knowledeges"
+              v-for="(knowledege, index) in this.currentProject.knowledge"
               :key="index"
               :type="tagRowClassName(index)">
             {{knowledege.knowledgeName}}
@@ -46,17 +47,27 @@
           {{this.currentProject.readme}}
         </el-descriptions-item>
       </el-descriptions>
+
     </el-card>
+    <div class="readme" v-highlight v-html="readmeText">
+      {{readmeText}}
+    </div>
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
+import { marked }from 'marked';
 import axios from 'axios'
+import HeaderView from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 export default {
   name: "ProjectDetail",
-  el: "#project_detail",
+  components: {Footer, HeaderView},
+  el: "#project_detail ",
   data() {
     return {
+      readmeText: '',
       currentProject: {
         id: '1',           // 项目id
         name: 'Learneur',        // 项目名
@@ -66,19 +77,12 @@ export default {
         starGazers: '123',     // 星标数
         forks: '1',  // 下载数
         homePage: 'https://github.com/RudeGoose/Learneur', // 主页
-        language: 'Java, HTML'.split(','), // 使用语言
+        language: '',
         readme: '',  // readme文档
-        knowledeges: [{
-          id: '1',                   // 知识点id
-          knowledgeName: 'Java EE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        },{
-          id: '2',                   // 知识点id
-          knowledgeName: 'Java SE',        // 知识点
-          knowledgeDescription: 'Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日甲骨文将其收购）推出的企业级应用程序版本。这个版本以前称为 J2EE。能够帮助我们开发和部署可移植、健壮、可伸缩且安全的服务器端 Java应用程序。Java EE 是在 Java SE 的基础上构建的，它提供Web 服务、组件模型、管理和通信 API，可以用来实现企业级的面向服务体系结构（service-oriented architecture，SOA）和 Web 3.0应用程序。' // 知识点描述
-        }],
+        knowledge: [],
         key: Date.now()
       },
+
       CS: {
         'text-align': 'left',  //文本居中
         'min-width': '250px',   //最小宽度
@@ -100,10 +104,24 @@ export default {
       }
     }
   },
+  created() {
+    this.init(this.$route.query.id)
+    //this.getReadText()
+  },
   methods:  {
+    getReadText() {
+      axios.get(this.currentProject.readme)
+          .then((data)=> {
+            //console.log(data.data.content)
+            this.readmeText = marked(decodeURIComponent(escape(window.atob(data.data.content))))
+            console.log(this.readmeText)
+          })
+          .catch((error)=> self.$message.error(error.response.data))
+    },
     init(id_project){
       axios.get('/projects/' + id_project)
           .then(response=>{this.currentProject = Object.assign({}, response.data)})
+
           .catch(e => self.$message.error(e.response.data));
     },
     tagRowClassName(index) {
@@ -119,7 +137,8 @@ export default {
         return 'danger'
       }
       return '';
-    }
+    },
+
   }
 }
 </script>
