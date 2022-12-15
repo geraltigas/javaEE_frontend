@@ -14,14 +14,14 @@
       <div v-for="(item,index) in articals" :key="index">
         <div class="artical_flow_item">
           <div class="artical_header">
-            <el-link @click="showDetail(item.idNote)"
+            <el-link @click="showDetail(item.noteId)"
               style="color: black"
               type="primary"
-              class="artical_true_head" 
+              class="artical_true_head"
             >
               <h1>{{ item.noteTitle }}</h1>
             </el-link>
-            
+
           </div>
           <div class="artical_short">
             {{ item.notePreviewContent }}
@@ -54,53 +54,14 @@
 <script>
 import axios from 'axios'
 import CarouselItem from "@/components/main/CarouselItem";
+
 axios.defaults.timeout = 100000
 export default {
   name: "MainView",
-  components: { CarouselItem },
+  components: { CarouselItem},
   data() {
     return {
-      articals: [
-        {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
-        {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
-        {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
-      ],
+      articals: [],
     };
   },
   created(){
@@ -113,7 +74,9 @@ export default {
     },
     getNoteList() {
       axios.get('/notes/get-notes-by-time').then((res) =>{
-          this.articals = res.data
+          this.articals = res.data.records
+        console.log('123')
+        console.log(res)
             }).catch(err => {
               // 报错
               console.log(err)
@@ -202,7 +165,7 @@ export default {
 }
 
 .artical_flow_item {
-  width: 100%;
+  width: 1200px;
   height: 300px;
   border: 1px solid #ebeef5;
   border-radius: 4px;

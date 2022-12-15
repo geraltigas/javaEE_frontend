@@ -14,6 +14,15 @@
         </iframe>
         <el-card style="width: 30%; margin-left: 40px">
           <span>视频选集</span>
+          <div v-for="item in list" :key="item.name" class="item">
+            <div class="list-img">
+              <img :src=item.coverUrl style="height: 80%" @click="clickImg(item.link)">
+            </div>
+            <div class="item-title">
+              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
+              <p>{{item.description}}</p>
+            </div>
+          </div>
         </el-card>
       </div>
       </div>
@@ -102,24 +111,25 @@ export default {
   },
   created() {
     this.init(this.$route.query.id)
-    //this.getPages()
   },
   computed: {
     videoLink() {
       return `https://player.bilibili.com/player.html?aid=861181459&bvid=${this.currentVideo.bvid}&cid=921346910&page=${this.current}`
-    }
+    },
   },
   methods: {
     init(id_video) {
       axios.get('/videos/' + id_video)
           .then(response => {
             this.currentVideo = Object.assign({}, response.data)
+            this.getPages(this.currentVideo.bvid)
           })
           .catch(e => self.$message.error(e.response.data));
     },
-    getPages() {
-      axios.get(`https://api.bilibili.com/x/web-interface/view?bvid=${this.currentVideo.bvid}`)
+    getPages(bvid) {
+      axios.get(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`)
           .then((response) => {
+
               this.page = response.data.data
               console.log(this.page)
           })

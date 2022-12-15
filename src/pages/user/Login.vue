@@ -73,6 +73,7 @@ import Footer from "@/components/layout/Footer";
 import { Toast } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import axios from 'axios'
+import {GET_USER} from "@/utils/api/user";
 export default {
   name: "login",
   components: {
@@ -81,6 +82,7 @@ export default {
   },
   middleware: 'auth',
   auth: 'guest',
+
   data() {
     return {
       user: {
@@ -103,6 +105,17 @@ export default {
     })
   },
   methods: {
+    async getUser(){
+      const res = await GET_USER(this.$store.getters.getEmail);
+      console.log('---')
+      console.log(res.data.userId)
+      this.$store.commit("userid",res.data.userId);
+
+    },
+    saveState(){
+      sessionStorage.setItem('state', JSON.stringify(this.$store.state))
+    },
+
     login() {
       let _ts = this;
       _ts.$refs.user.validate(async (valid) => {
@@ -111,18 +124,25 @@ export default {
           axios.post('/authenticate/login',
             {
               email:_ts.user.account,
-              password: _ts.user.password
+              password: _ts.user.password,
+
             }).then((res) =>{
-              if(res.data.status == 200){
-                var userInfo = res.data.data;
-                this.$store.commit('Token', userInfo.token);
-                this.$store.commit('username', this.user.account);
-                Toast({ message: '登录成功', type: 'success',duration: 1500});   // ui弹窗提示
-                if (_ts.historyUrl) {
-                  window.location.href = _ts.historyUrl
-                } // 跳转到原来页面
+
+              if(res!==undefined && res.status === 200){
+                console.log("success");
+                var userInfo = res.data;
+                window.sessionStorage.setItem('token',userInfo);
+
+                this.$store.commit('Token', userInfo);
+                this.$store.commit('email', this.user.account);
+                this.getUser();
+                this.$router.push('/');
+                this.$message.success('登陆成功');
               } else {
-              Toast({ message: res.data.message, duration: 1500});   // ui弹窗提示
+                console.log(res)
+                this.loginLoading = false
+                return this.$message.error('登录失败');
+
             }
             }).catch(err => {
               // 报错
@@ -189,6 +209,7 @@ export default {
     let _ts = this
     _ts.$store.commit('setActiveMenu', 'login');
     _ts.$set(_ts, 'historyUrl', _ts.$route.query.historyUrl || '');
+    window.addEventListener('unload', this.saveState);
     // if (_ts.$auth.loggedIn) {
     //   _ts.$router.push({
     //     name: 'index'

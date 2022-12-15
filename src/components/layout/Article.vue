@@ -37,7 +37,7 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
   export default {
     name: "noteedit",
-    components:{ 
+    components:{
       mavonEditor,
       // prop () {
       //           return {
@@ -73,18 +73,18 @@ import "mavon-editor/dist/css/index.css";
     },
     methods: {
       submitForm() {
-        axios.post('/notes/post', 
+        axios.post('/notes/post',
             {
               noteTitle:this.ruleForm.title,
-              notePreviewContent:this.ruleForm.content,
+              noteContent:this.ruleForm.content,
               idResources:1,
-              username:localStorage.getItem('username')
+              noteAuthorId:this.$store.getters.getUserid
             }).then((res) =>{
                 //处理成功后的逻辑
                 console.log(res)
               this.$alert('操作成功', '提示', {
                 confirmButtonText: '确定',
-                
+
               });
             }).catch(err => {
               // 报错

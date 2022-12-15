@@ -9,23 +9,24 @@
 
     <div style="max-height: 58px;overflow: hidden">
       <el-menu  mode="horizontal"
+                :default-active="this.$route.path"
               style="margin-top: -2px;border: 0;">
-        <el-menu-item index="index">
+        <el-menu-item index="/">
           <el-link type="success" href="/">首页</el-link>
         </el-menu-item>
-        <el-menu-item index="knowledge">
+        <el-menu-item index="/knowledges">
           <el-link type="success" href="/knowledges">学习</el-link>
         </el-menu-item>
-        <el-menu-item index="projects">
+        <el-menu-item index="/projects">
           <el-link type="success" href="/projects">项目</el-link>
         </el-menu-item>
-        <el-menu-item index="videos">
+        <el-menu-item index="/videos">
           <el-link type="success" href="/videos">视频</el-link>
         </el-menu-item>
-        <el-menu-item index="books">
+        <el-menu-item index="/books">
           <el-link type="success" href="/books">电子书</el-link>
         </el-menu-item>
-        <el-menu-item index="notes">
+        <el-menu-item index="/notes">
           <el-link type="success" href="/notes">笔记</el-link>
         </el-menu-item>
       </el-menu>
@@ -62,10 +63,10 @@
           </el-popover>
           <el-link :underline="false" rel="nofollow" style="margin-left: 10px;">
             <el-dropdown   @command="handleCommand" trigger="click">
-              <el-avatar size="small" src="https://static.rymcu.com/article/1578475481946.png"></el-avatar>
+              <el-avatar size="small" src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg"></el-avatar>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item style="align-items: center;">
-                  <el-avatar class="mr-3" size="small" src="https://static.rymcu.com/article/1578475481946.png"
+                  <el-avatar class="mr-3" size="small" src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg"
                             style="margin-top: 1rem;"></el-avatar>
                   <el-link :underline="false" rel="nofollow" style="margin-left: 10px;margin-bottom: 1rem;">
                     {{ user.username }}
@@ -116,6 +117,7 @@
 
 <script>
 import axios from 'axios'
+import {GET_USER} from "@/utils/api/user";
 export default {
   name: "HeaderView",
   data() {
@@ -127,17 +129,19 @@ export default {
       notificationNumbers: "",
       showPopover: false,
       autofocus: false,
-      loggedIn:true,
+      loggedIn:false,
       user:{},
     };
   },
   created(){
-    if(localStorage.getItem('username'))
+    console.log(this.$route.path)
+    if(this.$store.getters.getEmail!=="")
     {
+      this.loggedIn=true
       this.getUser()
     }
     else{
-      this.loggedIn = true
+      this.loggedIn = false
     }
   },
   methods:{
@@ -154,7 +158,10 @@ export default {
           })
           break;
         case 'logout':
+          _ts.$router.push('/')
           this.loggedIn = false
+            localStorage.clear()
+          window.sessionStorage.clear();
           break;
         default:
           _ts.$router.push({
@@ -164,16 +171,9 @@ export default {
     },
     getUser()
     {
-      axios.post('/get-user/'+localStorage.getItem('username'), {
-      }).then(function (res) {
-        this.user = res.data
-        if(this.user == {})
-        {
-          this.loggedIn = false;
-        }else{
-          this.loggedIn = true
-        }
-      })
+      console.log(this.$store.getters.getEmail)
+      const res = GET_USER(this.$store.getters.getEmail);
+      console.log(res)
     }
   }
 }

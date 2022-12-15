@@ -1,14 +1,31 @@
 <template>
-    
-    <el-container>
-        <el-header style="width:100%;margin: 0;padding: 0;top: 0;">
-      <Header></Header>
-    </el-header>
-    <el-main>
-        <div style="display: contents;">
-            <div class="note">
+
+    <el-container style="height: 100%">
+      <el-header style="width:100%;margin: 0;padding: 0;top: 0;">
+        <Header></Header>
+      </el-header>
+    <el-main style="height: 2000px;">
+        <div style="">
+          <div class="upper">
+            <div class="backimg"></div>
+            <div class="user-info">
+            <div style="">
+              <img src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg" alt="" width="100px" height="100px" style="border-radius: 50%"/>
+            </div>
+            <div class="user-main">
+              <div style="font-weight: bold" >
+                用户名:<span >{{ userInfo.username }}</span>
+              </div>
+              <div style="font-weight: bold;margin-left: 10px">
+                邮箱:<span>{{ userInfo.email }}</span>
+                <el-button style="margin-left:20px" size="small" type="primary" icon="el-icon-edit" round @click="showEditDialog()"></el-button>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="note">
               <el-row :gutter="10" class="notice ">
-    <el-col :span="12">
+    <el-col :span="10">
       <div class="notice_left">
         <div class="notice_title">
           <div class="title_left">
@@ -21,8 +38,8 @@
         <div class="no_left_massage">
           <ul>
             <li v-for="(item,index) in noteList" :key="index">
-              <p class="com-hover" @click="showDetail(item.idNote)" >{{item.head}}</p>
-              <span class="time">{{item.time}}</span>
+              <p class="com-hover" @click="showDetail(item.noteId)" >{{item.noteTitle}}</p>
+              <span class="time">{{item.createdTime}}</span>
             </li>
           </ul>
         </div>
@@ -30,20 +47,7 @@
     </el-col>
   </el-row>
             </div>
-        <div class="user-info">
-      <div style="margin-left:120px">
-        <img src="https://static.rymcu.com/article/1578475481946.png" alt="" width="50px" height="50px" />
-      </div>
-      <div class="user-main">
-        <div style="color: #999;margin-left: 50px;" >
-          用户名:<span>{{ userInfo.username }}</span>
-        </div>
-        <div style="color: #999;margin-left: 50px;">
-          邮箱:<span>{{ userInfo.email }}</span>
-          <el-button style="margin-left:20px" size="small" type="primary" icon="el-icon-edit" round @click="showEditDialog()"></el-button>
-        </div>
-      </div>
-    </div>
+
         </div>
         <el-dialog
   title="修改邮箱"
@@ -64,13 +68,14 @@
       <Footer></Footer>
     </el-footer>
     </el-container>
-    
+
   </template>
-  
+
   <script>
   import axios from 'axios'
   import Header from "@/components/layout/Header";
   import Footer from "@/components/layout/Footer";
+  import {GET_USER, GET_USER_NOTE} from "@/utils/api/user";
   export default {
     name: 'mypage',
     components: {
@@ -80,66 +85,26 @@
     data() {
       return {
         noteList: [
-      {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
-        {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
-        {
-          head: "什么是嵌入式系统？",
-          short:
-            "什么是贪嗔痴？因外在人、事、物而引发内心情绪，因情绪的涌动而产生感受，感受好就喜欢，巴不得这样的感受不要消失，这就是贪；感受不好，就不喜欢，巴不得除之而后快，这就是嗔；而对自己的贪与嗔没有一点觉知，从而被内心的贪嗔好恶牵着鼻子走，就叫痴。一个人若不能对自己内心的贪嗔好恶有所觉知，则自然会被贪嗔好恶牵着鼻子走，它要我们快乐我们就快乐，它要我们烦恼痛苦我们就烦恼痛苦，内心不能自由，这也就是为什么佛教说",
-          tags: ["#嵌入式", "#公告"],
-          user: {
-            name: "Geraltigas",
-            avatar:
-              "https://avatars2.githubusercontent.com/u/2276718?s=460&v=4",
-          },
-          time: "13天前",
-          read: 123,
-        },
+
       ],
         userInfo:{
-          username:'aaaa',
-          email:'1111111@qq.com'
+          username:'',
+          email:''
         },
         editDialogVisible: false,
         email:'',
       }
     },
-  
+
     created(){
         this.getUser()
         this.getNoteList()
     },
     methods: {
-      getNoteList() {
-      let _ts = this;
-      _ts.$axios.$get('/notes/get-user/'+localStorage.getItem('username'), {
-      }).then(function (res) {
-        this.noteList = res.data
-      })
+      async getNoteList() {
+        const res = await GET_USER_NOTE({id:this.$store.getters.getUserid});
+        this.noteList = res.data.records;
+        console.log(res)
     },
     showDetail(id)
     {
@@ -163,47 +128,49 @@
         {
             this.editDialogVisible = true
         },
-        getUser()
-    {
-      let _ts = this;
-      _ts.$axios.$post('/get-user/'+localStorage.getItem('username'), {
-      }).then(function (res) {
-        this.userInfo = res.data
-        if(this.user == {})
+        async getUser()
         {
-          this.loggedIn = false;
-        }else{
-          this.loggedIn = true
+          const res = await GET_USER(this.$store.getters.getEmail)
+          this.userInfo.username = res.data.realName;
+          this.userInfo.email = res.data.email;
         }
-      })
-    }
     }
   }
   </script>
-  
+
   <style lang="scss" scoped>
-  
+
   .footer {
   position: fixed;
   bottom: 0;
   width: 100%;
 }
 .note {
-    position: absolute;
-    top: 200px;
-    left: 200px;
     width: 1000px;
-    height: 1200px;
+    height: 200px;
+  margin-top: 10px;
+  margin-left: 50%;
+  transform: translate(-60%,0%);
   }
-  .user-info{
-    position: absolute;
-    top: 300px;
-    right: 300px;
-    margin-left: 20px;
-    width: 300px;
+.upper {
+  width: 100%;
+  .backimg{
+    height: 200px;
+    background: linear-gradient(#ffffff 50%, rgba(255,255,255,0) 0) 0 0,
+    radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255,255,255,0) 0) 0 0,
+    radial-gradient(circle closest-side, #FFFFFF 50%, rgba(255,255,255,0) 0) 55px 0 #48B;
+    background-size: 110px 200px;
+    background-repeat: repeat-x;
+  }
+  .user-info {
+    margin-left: 50%;
+    transform: translate(-50%, -30%);
+    text-align: center;
+    width: auto;
     height: 150px;
-    background-color: white;
+
   }
+}
   .notice {
   padding-bottom: 20px;
   .notice_title {
@@ -236,7 +203,7 @@
       li {
         display: flex;
         background: #fff;
-        border: 1;
+        border: 1px;
         height: 170px;
         border-top: 1px solid #f2f2f5;
         .right_item {
@@ -283,6 +250,7 @@
   }
   .notice_left {
     background: #fff;
+    width: 1200px;
     height: 462px;
     border-radius: 4px;
     overflow: hidden;
@@ -305,7 +273,7 @@
             text-overflow: ellipsis;
           }
           .time {
-            width: 80px;
+            width: 500px;
             display: inline-block;
             text-align: right;
             color: #999999;
@@ -362,9 +330,8 @@
     height: 60px !important;
     display: flex;
     background: #fff;
-    border: 1;
+    border: 1px;
     border-bottom: 1px solid #f2f2f5 !important;
 }
 
   </style>
-  

@@ -1,10 +1,10 @@
 <template>
     <div>
-        <h1>{{this.ruleForm.title}}</h1>
-    
-<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" >
+
+    <h3 style="text-align: center">{{this.noteTitle}}</h3>
+<el-form  label-width="100px" >
         <el-form-item prop="content">
-          <mavon-editor v-model="ruleForm.content" :subfield="false"
+          <mavon-editor v-model="noteContent" :subfield="false"
                   :defaultOpen="'preview'"
                   :editable="false"
                   :toolbarsFlag="false"
@@ -23,11 +23,8 @@ export default {
     components:{ mavonEditor },
         data () {
             return {
-              ruleForm: {
-          id: '',
-          title: 'title',
-          content: '## 父子页面通信\n'
-        },
+              noteTitle:'',
+              noteContent:''
             };
         },
         computed: {
@@ -46,8 +43,10 @@ export default {
             getNote(id)
             {
                 axios.get('/notes/detail/'+id, {
-                }).then(function (res) {
-                    this.ruleForm = res.data
+                }).then((res) => {
+                  this.noteTitle = res.data.noteTitle;
+                  this.noteContent = res.data.noteContent;
+
                 })
             }
         },

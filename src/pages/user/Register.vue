@@ -16,7 +16,7 @@
           <el-input v-model="user.email" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="用户名" prop="name"
-                      :rules="[{ required: true, message: '请输入密码', trigger: 'blur' }]">
+                      :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
           <el-input v-model="user.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password"
@@ -141,7 +141,8 @@ export default {
             username: _ts.user.name,
             email: _ts.user.email,
             password: _ts.user.password,
-            verificationCode: _ts.user.code
+            verificationCode: _ts.user.code,
+            real_name: _ts.user.name
           }
           axios.post('/authenticate/register', data).then(function (res) {
             _ts.$set(_ts, 'registerLoading', false);
