@@ -10,7 +10,6 @@ import Register from '../pages/user/Register.vue'
 import KnowledgeDetailView from "@/pages/knowledge/KnowledgeDetailView.vue";
 import KnowledgeListView from "@/pages/knowledge/KnowledgeListView.vue";
 import Neo4jVisualization from "@/components/neo4j/Neo4jVisualization.vue";
-import HomeView from "../pages/notes/NoteView.vue";
 import NoteDetail from "../pages/notes/NoteDetail.vue"
 import MyPage from "../pages/user/MyPage.vue"
 import NoteEdit from "../components/layout/Article.vue"
@@ -18,7 +17,7 @@ import ProjectDetailView from "@/pages/projects/ProjectDetailView";
 import VideoPlayView from "@/pages/videos/VideoPlayView";
 import BookDetailView from "@/pages/books/BookDetailView";
 import NoteView from "@/pages/notes/NoteView";
-import SearchView from "@/pages/search/SearchView";
+import SearchView from "../pages/search/SearchView.vue"
 Vue.use(VueRouter)
 
 const routes = [

@@ -34,33 +34,13 @@
 
     <el-col :md="10" :span="10" :xs="16" style="line-height: 60px">
         <el-col style="text-align: right;" v-if="loggedIn">
-          <el-popover
-            placement="bottom"
-            trigger="click"
-            v-model="showPopover"
-            width="400">
-            <el-input @keyup.enter.native="querySearchAsync" name="searchInput" placeholder="搜索"
-                      v-model="queryString">
-              <el-button @click="querySearchAsync" slot="append">
-                <svg height="24" style="fill: rgba(0, 0, 0, 1);" viewBox="0 0 24 24" width="24"
-                    xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
-                  <path
-                    d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
-                </svg>
-              </el-button>
-            </el-input>
-            <el-button circle size="small" slot="reference">
-              <svg height="14" style="fill: rgba(0, 0, 0, 1);" viewBox="0 0 24 24" width="14"
-                  xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
-                <path
-                  d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
-              </svg>
-            </el-button>
-          </el-popover>
+          <search-box placeholder="搜索" @search="onSearch"></search-box>
+          <el-link :underline="false" href="/portfolio/post" rel="nofollow"
+                  style="padding-left: 10px;padding-right: 10px;">创建作品集
+          </el-link>
+          <el-link :underline="false" href="/article/post" rel="nofollow"
+                  style="padding-left: 10px;padding-right: 10px;">发帖
+          </el-link>
           <el-link :underline="false" rel="nofollow" style="margin-left: 10px;">
             <el-dropdown   @command="handleCommand" trigger="click">
               <el-avatar size="small" src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg"></el-avatar>
@@ -79,33 +59,7 @@
           </el-link>
         </el-col>
         <el-col style="text-align: right;" v-else>
-          <el-popover
-            placement="bottom"
-            trigger="click"
-            v-model="showPopover"
-            width="400">
-            <el-input @keyup.enter.native="querySearchAsync" name="searchInput" placeholder="搜索"
-                      v-model="queryString">
-              <el-button @click="querySearchAsync" slot="append">
-                <svg height="24" style="fill: rgba(0, 0, 0, 1);" viewBox="0 0 24 24" width="24"
-                    xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
-                  <path
-                    d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
-                </svg>
-              </el-button>
-            </el-input>
-            <el-button circle size="small" slot="reference">
-              <svg height="14" style="fill: rgba(0, 0, 0, 1);" viewBox="0 0 24 24" width="14"
-                  xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
-                <path
-                  d="M11.412 8.586c.379.38.588.882.588 1.414h2a3.977 3.977 0 0 0-1.174-2.828c-1.514-1.512-4.139-1.512-5.652 0l1.412 1.416c.76-.758 2.07-.756 2.826-.002z"></path>
-              </svg>
-            </el-button>
-          </el-popover>
+          <search-box placeholder="搜索" @search="onSearch"></search-box>
           <!-- <el-link :underline="false" @click="login" rel="nofollow" style="margin-left: 10px;">登录</el-link> -->
           <el-link href="/login" style="margin-left: 10px;">登录</el-link>
           <el-link href="/register" style="margin-left: 10px;">注册</el-link>
@@ -116,6 +70,7 @@
 </template>
 
 <script>
+import SearchBox from "@/components/widget/SearchBox.vue"
 import axios from 'axios'
 import {GET_USER} from "@/utils/api/user";
 export default {
@@ -145,9 +100,9 @@ export default {
     }
   },
   methods:{
-    querySearchAsync()
+    onSearch(keyword)
     {
-
+      this.$router.push("/search")
     },
     handleCommand(item) {
       let _ts = this;
