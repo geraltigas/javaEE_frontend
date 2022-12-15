@@ -21,9 +21,9 @@
             <el-tab-pane :label="'网课('+total(videos)+')'">
                 <video-list :videos="videos" @currentChange="fetchVideo"></video-list>
             </el-tab-pane>
-            <!-- <el-tab-pane :label="'笔记('+notes.total+')'">
-                <book-list :notes="books" @currentChange="fetchNote"></book-list>
-            </el-tab-pane> -->
+            <el-tab-pane :label="'笔记('+notes.total+')'">
+                <note-list :notes="notes" @currentChange="fetchNote"></note-list>
+            </el-tab-pane>
         </el-tabs>
     </el-row>
     </el-main>
@@ -41,6 +41,8 @@ import BookList from "@/pages/books/BookList";
 import ProjectList from "@/pages/projects/ProjectList";
 import VideoList from "@/pages/videos/VideoList";
 import KnowledgeList from "@/pages/knowledge/KnowledgeList";
+import NoteList from "@/pages/notes/NoteList";
+
 import { SEARCH_KNOWLEDGE, SEARCH_BOOK, SEARCH_PROJECT, SEARCH_VIDEO, SEARCH_NOTE } from "@/utils/api/search/search.js";
 export default {
     name: "SearchView",
@@ -92,6 +94,7 @@ export default {
         },
         fetchNote(current) {
             SEARCH_NOTE({keyword:this.keyword, current: current}).then(res => {
+                    console.log(res.records);
                     this.notes = res
             })
         },
@@ -103,7 +106,8 @@ export default {
         BookList,
         ProjectList,
         VideoList,
-        KnowledgeList
+        KnowledgeList,
+        NoteList
     },
     watch: {
         "$route.query": {

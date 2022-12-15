@@ -10,8 +10,8 @@
             <span>{{ item.title }}</span>
           </div>
           <div class="knowledge">
-            <el-tag style="margin-left: 5px" v-for="i in item.knowledgeList" :key="i.id">
-              {{i.knowledgeName}}
+            <el-tag style="margin-left: 5px" v-for="i in item.knowledge" :key="i.id" effect="plain">
+             # {{i.knowledgeName}}
             </el-tag>
           </div>
         </div>

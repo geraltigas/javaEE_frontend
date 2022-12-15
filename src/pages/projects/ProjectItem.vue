@@ -4,11 +4,11 @@
       <div class="item-header">
         <div class="item-title">
           <span>{{ item.name }}</span>
-          <el-tag style="margin-left: 5px">{{item.language}}</el-tag>
+          <el-tag style="margin-left: 10px">{{item.language}}</el-tag>
         </div>
         <div class="knowledge" v-if="item.knowledge.length !== 0">
-          <el-tag style="margin-left: 5px"  v-for="i in item.knowledge" :key="i.idKnowledge">
-            {{i.knowledgeName}}
+          <el-tag style="margin-left: 5px"  v-for="i in item.knowledge" :key="i.idKnowledge" effect="plain">
+           # {{i.knowledgeName}}
           </el-tag>
         </div>
       </div>
