@@ -3,7 +3,7 @@
 
     <div>
       <a class="navbar-brand" href="/" rel="nofollow">
-        <img alt="RYMCU" class="navbar-brand-img" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+        <img alt="Learneur" class="navbar-brand-img" src="@/assets/images/L.png">
       </a>
     </div>
 
@@ -35,12 +35,6 @@
     <el-col :md="10" :span="10" :xs="16" style="line-height: 60px">
         <el-col style="text-align: right;" v-if="loggedIn">
           <search-box placeholder="搜索" @search="onSearch"></search-box>
-          <el-link :underline="false" href="/portfolio/post" rel="nofollow"
-                  style="padding-left: 10px;padding-right: 10px;">创建作品集
-          </el-link>
-          <el-link :underline="false" href="/article/post" rel="nofollow"
-                  style="padding-left: 10px;padding-right: 10px;">发帖
-          </el-link>
           <el-link :underline="false" rel="nofollow" style="margin-left: 10px;">
             <el-dropdown   @command="handleCommand" trigger="click">
               <el-avatar size="small" src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg"></el-avatar>
@@ -75,6 +69,9 @@ import axios from 'axios'
 import {GET_USER} from "@/utils/api/user";
 export default {
   name: "HeaderView",
+  components:{
+    SearchBox
+  },
   data() {
     return {
       queryString: '',
@@ -100,9 +97,13 @@ export default {
     }
   },
   methods:{
-    onSearch(keyword)
-    {
-      this.$router.push("/search")
+    onSearch(keyword) {
+      this.$router.push({
+        path: `/search`,
+        query: {
+          q: keyword
+        }
+      })
     },
     handleCommand(item) {
       let _ts = this;

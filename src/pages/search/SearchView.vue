@@ -21,7 +21,7 @@
             <el-tab-pane :label="'网课('+total(videos)+')'">
                 <video-list :videos="videos" @currentChange="fetchVideo"></video-list>
             </el-tab-pane>
-            <el-tab-pane :label="'笔记('+notes.total+')'">
+            <el-tab-pane :label="'笔记('+total(notes)+')'">
                 <note-list :notes="notes" @currentChange="fetchNote"></note-list>
             </el-tab-pane>
         </el-tabs>
@@ -72,33 +72,33 @@ export default {
                 return 0;
             }
         },
-        fetchBook(current) {
-            SEARCH_BOOK({keyword:this.keyword, current: current}).then(res => {
-                    this.books = res
-            })
+        async fetchBook(current) {
+          const res = await SEARCH_BOOK({keyword:this.keyword, current: current})
+          this.books = res.data
         },
         fetchProject(current) {
             SEARCH_PROJECT({keyword:this.keyword, current: current}).then(res => {
-                    this.projects = res
+                    this.projects = res.data
             })
         },
         fetchVideo(current) {
             SEARCH_VIDEO({keyword:this.keyword, current: current}).then(res => {
-                    this.videos = res
+                    this.videos = res.data
             })
         },
         fetchKnowledge(current) {
             SEARCH_KNOWLEDGE({keyword:this.keyword, current: current}).then(res => {
-                    this.knowledges = res
+              //console.log(res)
+                    this.knowledges = res.data
             })
         },
         fetchNote(current) {
             SEARCH_NOTE({keyword:this.keyword, current: current}).then(res => {
-                    console.log(res.records);
-                    this.notes = res
+              console.log(res.data);
+                    this.notes = res.data
             })
         },
-    }, 
+    },
     components: {
         SearchBox,
         Header,

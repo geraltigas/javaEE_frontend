@@ -5,25 +5,17 @@
       <div>
 
 
-      <div id="video_player" style="padding-right: 200px; padding-left: 200px; padding-bottom: 50px; display: flex;">
+      <div id="video_player" style="padding-right: 200px; padding-left: 200px; padding-bottom: 50px;">
 
         <iframe
             :src="videoLink"
                 scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
                 controls width="1080" height="720" ref="videoPlay">
         </iframe>
-        <el-card style="width: 30%; margin-left: 40px">
-          <span>视频选集</span>
-          <div v-for="item in list" :key="item.name" class="item">
-            <div class="list-img">
-              <img :src=item.coverUrl style="height: 80%" @click="clickImg(item.link)">
-            </div>
-            <div class="item-title">
-              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
-              <p>{{item.description}}</p>
-            </div>
-          </div>
-        </el-card>
+        <div>
+          <el-button @click="before">上一集</el-button>
+          <el-button @click="next">下一集</el-button>
+        </div>
       </div>
       </div>
       <div id="video_descriptiom">
@@ -118,6 +110,17 @@ export default {
     },
   },
   methods: {
+    before() {
+      if(this.current > 1){
+        this.current--;
+      }
+      else{
+        this.$message.error("到第一集了")
+      }
+    },
+    next() {
+      this.current++;
+    },
     init(id_video) {
       axios.get('/videos/' + id_video)
           .then(response => {

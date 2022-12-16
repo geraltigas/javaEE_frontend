@@ -1,32 +1,34 @@
 <template>
     <el-card>
     <div class="card-body d-flex flex-column">
-        <el-link @click="this.$router.push('/notedetail/' + item.noteId);" style="margin-bottom: .5rem;">
+        <el-link :href="/notedetail/+item.noteId" style="margin-bottom: .5rem;">
+<!--          @click="this.$router.push('/notedetail/' + item.noteId);"-->
         <h4>
             <span v-html="item.noteTitle"></span>
         </h4>
         </el-link>
-        <el-tag 
-        style="margin-left: 0.5rem;"
-        v-for="tag in item.noteKp.split(' ')"
-        :key="tag"
-        size="mini"
-        effect="plain">
-        # {{ tag }}
-        </el-tag>
+<!--        <el-tag -->
+<!--        style="margin-left: 0.5rem;"-->
+<!--        v-for="tag in item.noteKp.split(' ')"-->
+<!--        :key="tag"-->
+<!--        size="mini"-->
+<!--        effect="plain">-->
+<!--        # {{ tag }}-->
+<!--        </el-tag>-->
         <div class="text-muted article-summary-md" v-html="item.notePreviewContent"></div>
         <el-row class="pt-5">
         <el-col :xs="3" :sm="1" :xl="1" class="mr-3">
             <el-avatar v-if="item.authorAvatarUrl" size="medium"
                         :src="item.authorAvatarUrl"></el-avatar>
             <el-avatar v-else size="medium"
-                        src="https://avatars2.githubusercontent.com/u/2276718?s=460&v=4"></el-avatar>
+                        src="https://c-ssl.duitang.com/uploads/blog/202012/26/20201226223704_3f25a.jpg"></el-avatar>
         </el-col>
         <el-col :xs="16" :sm="16" :xl="16">
             <div>
-            <el-link target="_blank" :href="'/user/' + item.noteAuthorId" class="text-default">
-                {{ item.noteAuthorName ? item.noteAuthorName : '??????' }}
-            </el-link>
+              <el-link></el-link>
+<!--            <el-link target="_blank" :href="'/user/' + item.noteAuthorId" class="text-default">-->
+<!--                {{ item.noteAuthorName ? item.noteAuthorName : '??????' }}-->
+<!--            </el-link>-->
             <small class="d-block text-muted">{{ item.updatedTime }}</small>
             </div>
         </el-col>
@@ -38,9 +40,9 @@
         </el-row>
     </div>
     </el-card>
-       
+
   </template>
-  
+
   <script>
   export default {
     name: "NoteItem",
@@ -51,7 +53,7 @@
     }
   }
   </script>
-  
+
 <style>
 body {
   margin: 0;
@@ -232,4 +234,3 @@ p {
   background: rgba(255, 0, 0, 0.4);
 }
   </style>
-  

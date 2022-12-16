@@ -32,7 +32,7 @@
             <span>我的笔记</span>
           </div>
           <div class="title_right">
-            <el-link href="/homeview">查看更多 ></el-link>
+            <el-link href="/notes">查看更多 ></el-link>
           </div>
         </div>
         <div class="no_left_massage">

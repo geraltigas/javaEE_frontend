@@ -43,27 +43,32 @@
       </el-descriptions>
       <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
         <el-descriptions-item>
-          <template slot="label"><i class="el-icon-notebook-1"></i>README</template>
-          {{this.currentProject.readme}}
+          <template slot="label"><i class="el-icon-notebook-1"></i>跳转</template>
+          <el-button @click="click">跳转至github</el-button>
         </el-descriptions-item>
       </el-descriptions>
 
     </el-card>
-    <div class="readme" v-highlight v-html="readmeText">
-      {{readmeText}}
-    </div>
+    <el-card style="margin-top: 40px">
+      <!--      <div class="readme" v-highlight v-html="readmeText" style="padding: 40px">-->
+      <!--        {{readmeText}}-->
+      <!--      </div>-->
+      <VueMarkdown :source="readmeText"></VueMarkdown>
+
+    </el-card>
+
     <Footer></Footer>
   </div>
 </template>
 
 <script>
-import { marked }from 'marked';
+import VueMarkdown from 'vue-markdown'
 import axios from 'axios'
 import HeaderView from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 export default {
   name: "ProjectDetail",
-  components: {Footer, HeaderView},
+  components: {Footer, HeaderView, VueMarkdown},
 
   el: "#project_detail",
 
@@ -115,14 +120,17 @@ export default {
       axios.get(this.currentProject.readme)
           .then((data)=> {
             //console.log(data.data.content)
-            this.readmeText = marked(decodeURIComponent(escape(window.atob(data.data.content))))
+            this.readmeText = decodeURIComponent(escape(window.atob(data.data.content)))
             console.log(this.readmeText)
           })
           .catch((error)=> self.$message.error(error.response.data))
     },
     init(id_project){
       axios.get('/projects/' + id_project)
-          .then(response=>{this.currentProject = Object.assign({}, response.data)})
+          .then(response=>{
+            this.currentProject = Object.assign({}, response.data)
+            this.getReadText()
+          })
 
           .catch(e => self.$message.error(e.response.data));
     },
@@ -140,7 +148,9 @@ export default {
       }
       return '';
     },
-
+    click(){
+      window.open(this.currentProject.link)
+    }
   }
 }
 </script>

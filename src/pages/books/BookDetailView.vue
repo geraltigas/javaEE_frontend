@@ -25,7 +25,10 @@
         </el-descriptions-item>
         <el-descriptions-item>
           <template slot="label"><i class="el-icon-notebook-1"></i>下载地址</template>
-          {{this.currentBook.downloadUrl}}
+          <el-link :href="currentBook.link" style="margin-bottom: .5rem;">
+            {{this.currentBook.link}}
+          </el-link>
+
         </el-descriptions-item>
       </el-descriptions>
       <el-descriptions class="margin-top" :column="3" border :content-style="CS" :label-style="LS" >
@@ -61,7 +64,7 @@ export default {
         fileSize: '',
         fileType: '',
         publicDate: '',
-        url: 'https://libgen.rocks/get.php?md5=2d0d59290c8adb2789da0c25757ad1d3&key=YM0NRXS05FVHESHN',  // 下载地址
+        link: '',  // 下载地址
         knowledge: [],
         key: Date.now()
       },
@@ -88,11 +91,13 @@ export default {
   },
   created() {
     this.init(this.$route.query.id)
+
   },
   methods:  {
     init(id){
       axios.get('/books/' + id)
-          .then(response=>{this.currentBook = Object.assign({}, response.data)})
+          .then(response=>{this.currentBook = Object.assign({}, response.data)
+          console.log(this.currentBook)})
           .catch(e => self.$message.error(e.response.data));
     },
     tagRowClassName(index) {

@@ -2,7 +2,7 @@
 <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
       <el-col v-for="book in books.records" :key="book.idBook" style="padding-bottom: 1rem;">
-        <book-item :item="book"></book-item>
+        <book-item :item="book" @click.native="click(book.idBook)"></book-item>
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
@@ -33,7 +33,10 @@ export default {
     methods: {
         currentChange(page) {
             this.$emit('currentChange', page)
-        }
+        },
+      click(id) {
+          this.$router.push(`/book-detail?id=${id}`)
+      }
     },
     components: {
         BookItem

@@ -13,5 +13,5 @@ export const GET_KNOWLEDGE = (data) => {
 }
 
 export const GET_NOTE = (data) => {
-    return request("get","/get-notes-by-time",data)
+    return request("get","/notes/get-notes-by-time",data)
 }

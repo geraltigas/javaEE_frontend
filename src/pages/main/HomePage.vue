@@ -36,7 +36,7 @@
           <div v-for="item in projectlist" :key="item.name" class="projectitem" @click="clickProject(item.idProject)" >
             <div class="item-title">
               <p class="el-icon-dog"></p>
-              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
+              <p class="title-p">{{item.name}}</p>
               <p style="padding-top: 20px;padding-left: 5px;">{{item.description}}</p>
               <div style="display: flex;padding-top: 30px;">
                 <div>
@@ -63,14 +63,13 @@
               <el-button type="text" @click="moreNotes">更多</el-button>
             </div>
           </div>
-          <div v-for="item in projectlist" :key="item.name" class="projectitem" >
+          <div v-for="item in notelist" :key="item.name" style="cursor: pointer" class="projectitem" @click="clickNote(item.noteId)" >
             <div class="item-title">
-              <p class="el-icon-dog"></p>
-              <a :href="item.link" :title="item.name" target="_blank">{{item.name}}</a>
-              <p>{{item.description}}</p>
+              <a :href="item.link" :title="item.name" target="_blank">{{item.noteTitle}}</a>
+              <p>{{item.notePreviewContent }}</p>
 
               <div style="display: flex;">
-                <el-tag><i class="el-icon-view"></i>{{item.stars}}</el-tag>
+                <el-tag><i class="el-icon-view"></i>{{item.createdTime}}</el-tag>
                 <el-tag style="margin-left: 10px"><i class="el-icon-thumb"></i>{{item.stars}}</el-tag>
               </div>
             </div>
@@ -101,8 +100,7 @@ export default {
     this.getVideoData();
     this.getKnowledgeData();
     this.getProjectData();
-
-
+    this.getNoteData();
   },
   props: {
     msg: String
@@ -128,12 +126,12 @@ export default {
     },
     async getProjectData(){
       const res = await GET_PROJECT();
-      console.log(res);
       this.projectlist = res.data.records;
     },
     async getNoteData(){
       const res = await GET_NOTE();
       this.notelist = res.data.records;
+      console.log(res)
     },
     clickProject(id){
       this.$router.push(`/project-detail?id=${id}`);
@@ -143,6 +141,9 @@ export default {
     },
     moreNotes(){
       this.$router.push('/notes');
+    },
+    clickNote(id) {
+      this.$router.push(`/notedetail/${id}`)
     }
 
   },

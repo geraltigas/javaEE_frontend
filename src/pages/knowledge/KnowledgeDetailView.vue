@@ -33,7 +33,6 @@
             <BilibiliListView :knowledge-id="id"/>
           </el-tab-pane>
         </el-tabs>
-        <TutorialListView :knowledge-id="id"/>
       </div>
 
     </el-main>
@@ -50,7 +49,6 @@ import {GET_KNOWLEDGE} from "@/utils/api/knowledgeDetail";
 import LessonListView from "@/pages/knowledge/LessonListView";
 import ProjectListView from "@/pages/knowledge/ProjectListView";
 import BookListView from "@/pages/knowledge/BookListView";
-import TutorialListView from "@/pages/knowledge/TutorialListView";
 import BilibiliListView from "@/pages/knowledge/BilibiliListView";
 
 export default {
@@ -61,7 +59,6 @@ export default {
     BilibiliListView,
     ProjectListView,
     LessonListView,
-    TutorialListView,
     BookListView,
     Header,
     Footer
@@ -158,9 +155,9 @@ img{
   cursor: pointer;
 }
 .resource-box{
-  width: 32%;
+  width: 100%;
   margin-left: 50%;
-  transform: translate(-80%,0%);
+  transform: translate(-50%,0%);
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)

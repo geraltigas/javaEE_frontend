@@ -2,7 +2,7 @@
     <el-row class="wrapper">
         <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
           <el-col v-for="video in videos.records" :key="video.idVideo" style="padding-bottom: 1rem;">
-            <video-item :item="video"></video-item>
+            <video-item :item="video" @click.native="click(video.idVideo)"></video-item>
           </el-col>
           <el-col>
             <div class="vertical-container text-center">
@@ -34,7 +34,10 @@
             currentChange(page) {
                 console.log("videolist "+page);
                 this.$emit('currentChange', page)
-            }
+            },
+          click(id){
+              this.$router.push(`/video-detail?id=${id}`)
+          }
         },
         components: {
             VideoItem

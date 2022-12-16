@@ -1,8 +1,8 @@
 <template>
 <el-row class="wrapper">
     <el-col :xs="24" :sm="24" :xl="24" style="margin: 0 auto;">
-      <el-col v-for="project in projects.records" :key="project.idProject" style="padding-bottom: 1rem;">
-        <project-item :item="project"></project-item>
+      <el-col v-for="project in projects.records" :key="project.idProject" style="padding-bottom: 1rem;" >
+        <project-item :item="project" @click.native="click(project.idProject)"></project-item>
       </el-col>
       <el-col>
         <div class="vertical-container text-center">
@@ -33,7 +33,10 @@ export default {
     methods: {
         currentChange(page) {
             this.$emit('currentChange', page)
-        }
+        },
+      click(id) {
+        this.$router.push(`/project-detail?id=${id}`)
+      }
     },
     components: {
         ProjectItem

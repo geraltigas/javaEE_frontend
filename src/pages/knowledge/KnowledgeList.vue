@@ -1,7 +1,7 @@
 <template>
 <div class="wrapper">
-  <el-row class="row-cards row-deck" :gutter="20">
-    <el-col v-for="knowledge in knowledges.records" :key="knowledge.idKnowledge">
+  <el-row class="row-cards row-deck" :gutter="20" >
+    <el-col v-for="knowledge in knowledges.records" :key="knowledge.idKnowledge" >
       <knowledge-item :item="knowledge"></knowledge-item>
     </el-col>
   </el-row>
@@ -33,7 +33,10 @@ export default {
     methods: {
         currentChange(page) {
             this.$emit('currentChange', page)
-        }
+        },
+      click(id) {
+          this.$router.push(`/knowledge/${id}`)
+      }
     },
     components: {
         KnowledgeItem

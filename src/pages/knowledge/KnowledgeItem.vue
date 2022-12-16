@@ -1,9 +1,9 @@
 <template>
   <el-col v-if="true" style="margin-bottom: 20px;">
-      <el-card :body-style="{ padding: '20px' }">
+      <el-card :body-style="{ padding: '20px' }" >
         <el-col :span="4">
-          <el-image :src="'@/assets/images/Java.png'" style="width:96px;height: 96px;border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;" fit="cover"
-                    :preview-src-list="['@/assets/images/Java.png']"></el-image>
+          <el-image :src="require(`@/assets/images/cover`+Math.floor((Math.random()*9)+1)+`.png`)" style="width:96px;height: 96px;border-radius: 10px;background: #f5f7fa;border: #f5f7fa solid 1px;" fit="cover"
+                    :preview-src-list="[require(`@/assets/images/cover`+Math.floor((Math.random()*9)+1)+`.png`)]"></el-image>
         </el-col>
         <el-col :span="16" style="padding-top: 0px; ">
           <div class="text-muted summary-md">{{item.knowledgeDescription}}</div>
@@ -20,7 +20,7 @@
       </el-card>
   </el-col>
 </template>
-  
+
   <script>
   export default {
     name: 'KnowledgeItem',
@@ -34,12 +34,12 @@
     },
     methods:{
       onClick(){
-        this.$emit('click');
+        this.$router.push(`/knowledge/${this.item.idKnowledge}`)
       }
     }
   }
   </script>
-  
+
 <style scoped>
 .text-muted {
   color: #9aa0ac !important;
@@ -54,4 +54,3 @@
   word-break: break-all;
 }
 </style>
-  

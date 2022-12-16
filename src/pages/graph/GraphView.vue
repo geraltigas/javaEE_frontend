@@ -1,5 +1,6 @@
 <template>
   <div class="view_container">
+    <el-button class="button" @click="click1">修改知识图</el-button>
     <v-chart class="chart" :option="option" @click="onClick"/>
   </div>
 </template>
@@ -72,6 +73,9 @@ export default {
       }else {
         this.edgeClick(param);
       }
+    },
+    click1() {
+      this.$router.push('/gadmin')
     },
     nodeClick(param) {
       // this.show_data = param.data;
@@ -155,6 +159,12 @@ export default {
 </script>
 
 <style scoped>
+.button{
+  margin-top: 20px;
+  margin-right: 20px;
+  float: right;
+
+}
 .chart {
   height: 92%;
   width: 92%;
